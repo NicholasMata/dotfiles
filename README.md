@@ -39,13 +39,13 @@ Note: A tiling window manager is not for everyone, unlike a traditional window m
 As stated above I prefer a tiling window manager. There are not many options out there for macOS since it is more popular on linux. I personally use [yabai](https://github.com/koekeishiya/yabai#)
 as I feel it is the best option out there for me. I particularly like how it is the only one currently available that supports [spaces](https://support.apple.com/guide/mac-help/work-in-multiple-spaces-mh14112/mac).
 
-[Configuration File](./yabairc)
+[Configuration File](./yabai/yabairc)
 
 ## Keyboard Shortcuts (SKHD)
 
 This is used to define your own keyboard shortcuts. This application is key to using Yabai as it does not have any keyboard shortcuts process built in.
 
-[Configuration file](./skhdrc)
+[Configuration file](./skhd/skhdrc)
 
 ## NodeJS
 
