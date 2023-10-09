@@ -80,12 +80,6 @@ else
   compinit -C
 fi
 
-alias vim="lvim"
-
-# Color LS
-alias ls='ls -G'
-alias ll='ls -laG'
-
 
 # Auto-cd
 setopt auto_cd
@@ -115,7 +109,15 @@ bindkey "\e[1;3C" forward-word # ⌥→
 bindkey '\e[1;9D' beginning-of-line # ⌘←
 bindkey '\e[1;9C' end-of-line # ⌘→
 bindkey '\e[107;9u' clear-screen
+bindkey '^[^?' backward-delete-word
 
+# Aliases
+alias ekitty="lvim ~/.config/kitty/kitty.conf"
+alias ezsh="lvim ~/.zshrc && source ~/.zshrc"
+alias vim="lvim"
+
+alias ls='ls -G'
+alias ll='ls -laG'
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
