@@ -61,4 +61,8 @@ lvim.plugins = {
   { 'theprimeagen/vim-be-good' },
 }
 
+lvim.builtin.nvimtree.setup.view = {relativenumber = true}
+
+vim.api.nvim_set_keymap('n', '<space>', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', { noremap=true, silent=true })
+
 require("hardtime").setup()
