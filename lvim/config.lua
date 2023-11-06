@@ -7,18 +7,18 @@ vim.opt.relativenumber = true
 -- we use protected-mode (pcall) just in case the plugin wasn't loaded yet.
 local _, actions = pcall(require, "telescope.actions")
 lvim.builtin.telescope.defaults.mappings = {
-	-- for input mode
-	i = {
-		["<C-j>"] = actions.move_selection_next,
-		["<C-k>"] = actions.move_selection_previous,
-		["<C-n>"] = actions.cycle_history_next,
-		["<C-p>"] = actions.cycle_history_prev,
-	},
-	-- for normal mode
-	n = {
-		["<C-j>"] = actions.move_selection_next,
-		["<C-k>"] = actions.move_selection_previous,
-	},
+  -- for input mode
+  i = {
+    ["<C-j>"] = actions.move_selection_next,
+    ["<C-k>"] = actions.move_selection_previous,
+    ["<C-n>"] = actions.cycle_history_next,
+    ["<C-p>"] = actions.cycle_history_prev,
+  },
+  -- for normal mode
+  n = {
+    ["<C-j>"] = actions.move_selection_next,
+    ["<C-k>"] = actions.move_selection_previous,
+  },
 }
 
 -- Disable toggle terminal because I use kitty multiplexer
@@ -59,10 +59,27 @@ lvim.plugins = {
     config = function() require "lsp_signature".on_attach() end,
   },
   { 'theprimeagen/vim-be-good' },
+  { 'theprimeagen/harpoon' },
 }
 
-lvim.builtin.nvimtree.setup.view = {relativenumber = true}
+lvim.builtin.nvimtree.setup.view = { relativenumber = true }
 
-vim.api.nvim_set_keymap('n', '<space>', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', { noremap=true, silent=true })
+vim.diagnostic.config({ virtual_text = false })
+lvim.builtin.which_key.mappings["lm"] = {
+  '<cmd>lua vim.diagnostic.open_float()<CR>', "Line Diagnostic"
+}
+lvim.builtin.which_key.mappings["v"] = { 'Speak Word' }
+lvim.builtin.which_key.vmappings["v"] = { 'Speak Selection' }
+lvim.keys.visual_mode["<leader>v"] = { '"xy:call system(\'say \'. shellescape(@x) .\' &\')<CR>', desc = 'Speak' }
+lvim.keys.normal_mode["<leader>v"] = ":call system('say '.shellescape(expand('<cword>')).' &')<CR>"
 
-require("hardtime").setup()
+lvim.builtin.which_key.mappings["m"] = {
+  name = "Harpoon",
+  m = { "<cmd>:lua require('harpoon.ui').toggle_quick_menu()<CR>", "Menu" },
+  a = { "<cmd>:lua require('harpoon.mark').add_file()<CR>", "Add" },
+  j = { "<cmd>:lua require('harpoon.ui').nav_next()<CR>", "Next" },
+  k = { "<cmd>:lua require('harpoon.ui').nav_prev()<CR>", "Previous" },
+  y = { "<cmd>:lua require('harpoon.ui').nav_file(1)<CR>", "Nav File 1" },
+  h = { "<cmd>:lua require('harpoon.ui').nav_file(2)<CR>", "Nav File 2" },
+  n = { "<cmd>:lua require('harpoon.ui').nav_file(3)<CR>", "Nav File 3" },
+}
