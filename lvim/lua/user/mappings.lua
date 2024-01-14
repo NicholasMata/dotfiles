@@ -6,6 +6,13 @@ lvim.builtin.which_key.vmappings["v"] = { 'Speak Selection' }
 lvim.keys.visual_mode["<leader>v"] = { '"xy:call system(\'say \'. shellescape(@x) .\' &\')<CR>', desc = 'Speak' }
 lvim.keys.normal_mode["<leader>v"] = ":call system('say '.shellescape(expand('<cword>')).' &')<CR>"
 
+lvim.builtin.which_key.mappings["n"] = {
+  name = "NPM",
+  s = { "<cmd>lua require('package-info').show()<cr>", "Show" },
+  h = { "<cmd>lua require('package-info').hide()<cr>", "Hide" },
+  c = { "<cmd>lua require('package-info').change_version()<cr>", "Change Version" }
+}
+
 lvim.builtin.which_key.mappings["m"] = {
   name = "Harpoon",
   m = { "<cmd>:lua require('harpoon.ui').toggle_quick_menu()<CR>", "Menu" },
@@ -40,5 +47,3 @@ lvim.builtin.telescope.defaults.mappings = {
     ["<C-k>"] = actions.move_selection_previous,
   },
 }
-
-

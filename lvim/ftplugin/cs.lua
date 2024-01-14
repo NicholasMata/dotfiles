@@ -1,14 +1,14 @@
-vim.list_extend(lvim.lsp.automatic_configuration.skipped_servers, { "csharp_ls" })
-
-local pid = vim.fn.getpid()
-local omnisharp_bin = "/Users/nicholasmata/.local/share/lvim/mason/bin/omnisharp"
-
+local util = require 'lspconfig.util'
 local config = {
   handlers = {
-    ["textDocument/definition"] = require('omnisharp_extended').handler,
+    ["textDocument/definition"] = require('csharpls_extended').handler,
   },
-  cmd = { omnisharp_bin, '--languageserver' , '--hostPID', tostring(pid) },
+  cmd = { 'csharp-ls' },
+  root_dir = util.root_pattern('../*.sln', '../*.csproj', '*.sln', '*.csproj', '*.fsproj', '.git'),
+  filetypes = { 'cs' },
+  init_options = {
+    AutomaticWorkspaceInit = true,
+  },
 }
 
-require("lvim.lsp.manager").setup("omnisharp", config)
-
+require('lvim.lsp.manager').setup("csharp_ls", config)

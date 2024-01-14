@@ -1,7 +1,30 @@
 reload("user.options")
 reload("user.mappings")
+reload("user.formatters")
+reload("user.linters")
 
 lvim.plugins = {
+  {
+    -- NPM Packge Info
+    "vuki656/package-info.nvim",
+    dependencies = "MunifTanjim/nui.nvim",
+  },
+  {
+    "iamcco/markdown-preview.nvim",
+    cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+    ft = { "markdown" },
+    build = function() vim.fn["mkdp#util#install"]() end,
+  },
+  {
+    -- View colors in editor
+    'norcalli/nvim-colorizer.lua'
+  },
+  {
+    'f-person/auto-dark-mode.nvim'
+  },
+  {
+    'Decodetalkers/csharpls-extended-lsp.nvim'
+  },
   {
     'kristijanhusak/vim-dadbod-ui',
     dependencies = { 'tpope/vim-dadbod' }
