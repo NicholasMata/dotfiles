@@ -10,6 +10,7 @@ lvim.plugins = {
     dependencies = "MunifTanjim/nui.nvim",
   },
   {
+    -- Markdown Preview
     "iamcco/markdown-preview.nvim",
     cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
     ft = { "markdown" },
@@ -17,26 +18,19 @@ lvim.plugins = {
   },
   {
     -- View colors in editor
-    'norcalli/nvim-colorizer.lua'
+    'NvChad/nvim-colorizer.lua'
   },
   {
+    -- Auto change vim theme
     'f-person/auto-dark-mode.nvim'
-  },
-  {
-    'Decodetalkers/csharpls-extended-lsp.nvim'
-  },
-  {
-    'kristijanhusak/vim-dadbod-ui',
-    dependencies = { 'tpope/vim-dadbod' }
   },
   {
     'rose-pine/neovim',
     name = 'rose-pine'
   },
   {
-    "catppuccin/nvim",
-    name = "catppuccin",
-    priority = 1000
+    'kristijanhusak/vim-dadbod-ui',
+    dependencies = { 'tpope/vim-dadbod' }
   },
   {
     "ray-x/lsp_signature.nvim",
