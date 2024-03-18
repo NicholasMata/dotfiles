@@ -25,12 +25,25 @@ lvim.plugins = {
     'f-person/auto-dark-mode.nvim'
   },
   {
+    -- Theme
     'rose-pine/neovim',
     name = 'rose-pine'
   },
   {
+    -- Database Management
     'kristijanhusak/vim-dadbod-ui',
     dependencies = { 'tpope/vim-dadbod' }
+  },
+  -- CSharp
+  {
+    'nicholasmata/nvim-dap-cs',
+    dependencies = { 'mfussenegger/nvim-dap' }
+  },
+  { 'Hoffs/omnisharp-extended-lsp.nvim' },
+  -- Misc
+  {
+    'kkoomen/vim-doge',
+    build = ":call doge#install()"
   },
   {
     "ray-x/lsp_signature.nvim",
@@ -39,7 +52,9 @@ lvim.plugins = {
   },
   { 'theprimeagen/vim-be-good' },
   { 'theprimeagen/harpoon' },
-  { 'nicholasmata/nvim-dap-cs', dependencies = { 'mfussenegger/nvim-dap' } }
+
 }
+
+vim.list_extend(lvim.lsp.automatic_configuration.skipped_servers, { "csharp_ls" })
 
 reload("dap-cs").setup()
