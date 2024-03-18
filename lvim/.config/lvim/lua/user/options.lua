@@ -1,4 +1,7 @@
-lvim.colorscheme = "catppuccin-mocha"
+vim.opt.termguicolors = true
+require('rose-pine').setup()
+
+lvim.colorscheme = "rose-pine"
 lvim.transparent_window = true
 vim.opt.relativenumber = true
 vim.opt.shiftwidth = 2 -- the number of spaces inserted for each indentation
@@ -21,12 +24,10 @@ auto_dark_mode.setup({
   update_interval = 1000,
   set_dark_mode = function()
     vim.api.nvim_set_option('background', 'dark')
-    vim.cmd('colorscheme catppuccin-mocha')
   end,
   set_light_mode = function()
     vim.api.nvim_set_option('background', 'light')
-    vim.cmd('colorscheme rose-pine-dawn')
   end,
 })
 
-require'colorizer'.setup()
+require 'colorizer'.setup()

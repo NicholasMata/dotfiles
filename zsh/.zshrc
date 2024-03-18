@@ -1,10 +1,10 @@
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Enable Powerlevel10k instant prompt. Should stay as close to the top of ~/.zshrc.
 export NVM_DIR="$HOME/.nvm"
 
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-# Initialization code that may require console input (password prompts, [y/n]
+# # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
@@ -22,7 +22,7 @@ if type brew &>/dev/null; then
   compinit
 fi
 
-source ~/.zsh/catppuccin_mocha-zsh-syntax-highlighting.zsh
+# source ~/.zsh/catppuccin_mocha-zsh-syntax-highlighting.zsh
 
 source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source $(brew --prefix)/share/zsh-history-substring-search/zsh-history-substring-search.zsh
