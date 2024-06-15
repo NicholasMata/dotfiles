@@ -1,5 +1,5 @@
-export EDITOR="$HOME/.local/bin/lvim"
-export VISUAL="$HOME/.local/bin/lvim"
+export EDITOR="/opt/homebrew/bin/nvim"
+export VISUAL="/opt/homebrew/bin/nvim"
 
 export CLICOLOR=1
 

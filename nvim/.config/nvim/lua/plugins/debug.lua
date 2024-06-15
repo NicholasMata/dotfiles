@@ -46,14 +46,44 @@ return {
     }
 
     -- Basic debugging keymaps, feel free to change to your liking!
-    vim.keymap.set('n', '<F5>', dap.continue, { desc = 'Debug: Start/Continue' })
-    vim.keymap.set('n', '<F1>', dap.step_into, { desc = 'Debug: Step Into' })
-    vim.keymap.set('n', '<F2>', dap.step_over, { desc = 'Debug: Step Over' })
-    vim.keymap.set('n', '<F3>', dap.step_out, { desc = 'Debug: Step Out' })
-    vim.keymap.set('n', '<leader>b', dap.toggle_breakpoint, { desc = 'Debug: Toggle Breakpoint' })
-    vim.keymap.set('n', '<leader>B', function()
-      dap.set_breakpoint(vim.fn.input 'Breakpoint condition: ')
-    end, { desc = 'Debug: Set Breakpoint' })
+    vim.keymap.set('n', '<leader>Dg', dap.session, { desc = '[g]et session' })
+    vim.keymap.set('n', '<leader>Ds', dap.continue, { desc = '[s]tart' })
+    vim.keymap.set('n', '<leader>Dp', dap.pause, { desc = '[p]ause' })
+    vim.keymap.set('n', '<leader>Dd', dap.disconnect, { desc = '[d]isconnect' })
+    vim.keymap.set('n', '<leader>Dq', dap.close, { desc = '[q]uit' })
+
+    vim.keymap.set('n', '<leader>Dc', dap.continue, { desc = '[c]ontinue' })
+    vim.keymap.set('n', '<leader>Di', dap.step_into, { desc = 'step [i]nto' })
+    vim.keymap.set('n', '<leader>Db', dap.step_back, { desc = 'step [b]ack' })
+    vim.keymap.set('n', '<leader>Do', dap.step_over, { desc = 'step [o]ver' })
+    vim.keymap.set('n', '<leader>Du', dap.step_out, { desc = 'step o[u]t' })
+
+    vim.keymap.set('n', '<leader>Dt', dap.toggle_breakpoint, { desc = '[t]oggle breakpoint' })
+    vim.keymap.set('n', '<leader>DU', dapui.toggle, { desc = 'toggle [U]I' })
+
+    local dap_signs = {
+      breakpoint = {
+        text = "",
+        texthl = "DiagnosticSignError",
+        linehl = "",
+        numhl = "",
+      },
+      breakpoint_rejected = {
+        text = "",
+        texthl = "DiagnosticSignError",
+        linehl = "",
+        numhl = "",
+      },
+      stopped = {
+        text = "",
+        texthl = "DiagnosticSignWarn",
+        linehl = "Visual",
+        numhl = "DiagnosticSignWarn",
+      }
+    }
+    vim.fn.sign_define("DapBreakpoint", dap_signs.breakpoint)
+    vim.fn.sign_define("DapBreakpointRejected", dap_signs.breakpoint_rejected)
+    vim.fn.sign_define("DapStopped", dap_signs.stopped)
 
     -- Dap UI setup
     -- For more information, see |:help nvim-dap-ui|
@@ -77,8 +107,6 @@ return {
       },
     }
 
-    -- Toggle to see last session result. Without this, you can't see session output in case of unhandled exception.
-    vim.keymap.set('n', '<F7>', dapui.toggle, { desc = 'Debug: See last session result.' })
 
     dap.listeners.after.event_initialized['dapui_config'] = dapui.open
     dap.listeners.before.event_terminated['dapui_config'] = dapui.close
