@@ -11,6 +11,7 @@ if [[ -f "/opt/homebrew/bin/brew" ]] then
   eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 
+ZVM_INIT_MODE=sourcing
 ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
 
 [ ! -d $ZINIT_HOME ] && mkdir -p "$(dirname $ZINIT_HOME)"
@@ -28,6 +29,11 @@ zinit light zsh-users/zsh-autosuggestions
 
 zinit light Aloxaf/fzf-tab
 
+zinit light jeffreytse/zsh-vi-mode
+
+zinit ice lucid wait'0'
+zinit light joshskidmore/zsh-fzf-history-search
+
 zinit snippet OMZP::git
 zinit snippet OMZP::command-not-found
 
@@ -41,12 +47,6 @@ source $(brew --prefix)/share/zsh-history-substring-search/zsh-history-substring
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-# bind UP and DOWN arrow keys to history substring search
-zmodload zsh/terminfo
-bindkey "$terminfo[kcuu1]" history-substring-search-up
-bindkey "$terminfo[kcud1]" history-substring-search-down
-bindkey '^[[A' history-substring-search-up
-bindkey '^[[B' history-substring-search-down
 
 # General options
 setopt correct
@@ -106,25 +106,17 @@ WORDCHARS=${WORDCHARS//\/[&.;]}                                 # Don't consider
 # Auto-cd
 setopt auto_cd
 
-# Vi mode
-bindkey -v
-export KEYTIMEOUT=1
-
-# vim-style command-line
-bindkey -M viins 'jk' vi-cmd-mode
-
-autoload -U edit-command-line
-zle -N edit-command-line
-bindkey -M vicmd v edit-command-line
-
 # FZF
 export FZF_DEFAULT_OPTS='--bind=alt-n:preview-down --bind=alt-p:preview-up'
 export FZF_DEFAULT_COMMAND='rg --files --hidden --smart-case --glob "!.git/*"'
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
+# bind UP and DOWN arrow keys to history substring search
+zmodload zsh/terminfo
 bindkey "$terminfo[kcuu1]" history-substring-search-up
 bindkey "$terminfo[kcud1]" history-substring-search-down
+
 bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
 
@@ -140,8 +132,8 @@ bindkey '^k' history-substring-search-up
 bindkey '^j' history-substring-search-down
 
 # Aliases
-alias ekitty="lvim ~/.config/kitty/kitty.conf"
-alias ezsh="lvim ~/.zshrc && source ~/.zshrc"
+alias ekitty="nvim ~/.config/kitty/kitty.conf"
+alias ezsh="nvim ~/.zshrc && source ~/.zshrc"
 alias vim="nvim"
 
 alias ls='ls -G'
