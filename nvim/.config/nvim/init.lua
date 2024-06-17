@@ -55,6 +55,9 @@ vim.opt.timeoutlen = 300
 vim.opt.splitright = true
 vim.opt.splitbelow = true
 
+vim.opt.spelllang = "en_us"
+vim.opt.spell = true
+
 -- Sets how neovim will display certain whitespace characters in the editor.
 --  See `:help 'list'`
 --  and `:help 'listchars'`
@@ -78,7 +81,7 @@ vim.keymap.set({ "n", "v" }, "<leader>oY", [["+Y]], { desc = "[Y]ank line" })
 
 vim.keymap.set("n", "<leader>w", "<cmd>w!<CR>", { desc = "[w]rite buffer" })
 vim.keymap.set("n", "<leader>q", "<cmd>confirm q<CR>", { desc = "[q]uit" })
-vim.keymap.set("n", "<leader>c", "<cmd>BufferKill<CR>", { desc = "[c]lose buffer" })
+vim.keymap.set("n", "<leader>c", "<cmd>bd<CR>", { desc = "[c]lose buffer" })
 
 -- Set highlight on search, but clear on pressing <Esc> in normal mode
 vim.opt.hlsearch = true

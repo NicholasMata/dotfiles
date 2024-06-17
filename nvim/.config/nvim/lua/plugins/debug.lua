@@ -1,124 +1,131 @@
--- debug.lua
---
--- Shows how to use the DAP plugin to debug your code.
---
--- Primarily focused on configuring the debugger for Go, but can
--- be extended to other languages as well. That's why it's called
--- kickstart.nvim and not kitchen-sink.nvim ;)
-
 return {
-  -- NOTE: Yes, you can install new plugins here!
-  'mfussenegger/nvim-dap',
-  -- NOTE: And you can specify dependencies as well
-  dependencies = {
-    -- Creates a beautiful debugger UI
-    'rcarriga/nvim-dap-ui',
+	{
+		"mfussenegger/nvim-dap",
+		dependencies = {
+			"williamboman/mason.nvim",
+			"jay-babu/mason-nvim-dap.nvim",
+		},
+		config = function()
+			local dap = require("dap")
 
-    -- Required dependency for nvim-dap-ui
-    'nvim-neotest/nvim-nio',
+			require("mason-nvim-dap").setup({
+				-- Makes a best effort to setup the various debuggers with
+				-- reasonable debug configurations
+				automatic_installation = true,
 
-    -- Installs the debug adapters for you
-    'williamboman/mason.nvim',
-    'jay-babu/mason-nvim-dap.nvim',
+				-- You can provide additional configuration to the handlers,
+				-- see mason-nvim-dap README for more information
+				handlers = {},
 
-    -- Add your own debuggers here
-    'leoluz/nvim-dap-go',
-  },
-  config = function()
-    local dap = require 'dap'
-    local dapui = require 'dapui'
+				-- You'll need to check that you have the required things installed
+				-- online, please don't ask me how to install them :)
+				ensure_installed = {
+					-- Update this to ensure that you have the debuggers for the langs you want
+					"delve",
+				},
+			})
 
-    require('mason-nvim-dap').setup {
-      -- Makes a best effort to setup the various debuggers with
-      -- reasonable debug configurations
-      automatic_installation = true,
+			-- Basic debugging keymaps, feel free to change to your liking!
+			vim.keymap.set("n", "<leader>Dg", dap.session, { desc = "[g]et session" })
+			vim.keymap.set("n", "<leader>Ds", dap.continue, { desc = "[s]tart" })
+			vim.keymap.set("n", "<leader>Dp", dap.pause, { desc = "[p]ause" })
+			vim.keymap.set("n", "<leader>Dd", dap.disconnect, { desc = "[d]isconnect" })
+			vim.keymap.set("n", "<leader>Dq", dap.close, { desc = "[q]uit" })
 
-      -- You can provide additional configuration to the handlers,
-      -- see mason-nvim-dap README for more information
-      handlers = {},
+			vim.keymap.set("n", "<leader>Dc", dap.continue, { desc = "[c]ontinue" })
+			vim.keymap.set("n", "<leader>Di", dap.step_into, { desc = "step [i]nto" })
+			vim.keymap.set("n", "<leader>Db", dap.step_back, { desc = "step [b]ack" })
+			vim.keymap.set("n", "<leader>Do", dap.step_over, { desc = "step [o]ver" })
+			vim.keymap.set("n", "<leader>Du", dap.step_out, { desc = "step o[u]t" })
 
-      -- You'll need to check that you have the required things installed
-      -- online, please don't ask me how to install them :)
-      ensure_installed = {
-        -- Update this to ensure that you have the debuggers for the langs you want
-        'delve',
-      },
-    }
+			vim.keymap.set("n", "<leader>Dt", dap.toggle_breakpoint, { desc = "[t]oggle breakpoint" })
 
-    -- Basic debugging keymaps, feel free to change to your liking!
-    vim.keymap.set('n', '<leader>Dg', dap.session, { desc = '[g]et session' })
-    vim.keymap.set('n', '<leader>Ds', dap.continue, { desc = '[s]tart' })
-    vim.keymap.set('n', '<leader>Dp', dap.pause, { desc = '[p]ause' })
-    vim.keymap.set('n', '<leader>Dd', dap.disconnect, { desc = '[d]isconnect' })
-    vim.keymap.set('n', '<leader>Dq', dap.close, { desc = '[q]uit' })
+			local dap_signs = {
+				breakpoint = {
+					text = "",
+					texthl = "DiagnosticSignError",
+					linehl = "",
+					numhl = "",
+				},
+				breakpoint_rejected = {
+					text = "",
+					texthl = "DiagnosticSignError",
+					linehl = "",
+					numhl = "",
+				},
+				stopped = {
+					text = "",
+					texthl = "DiagnosticSignWarn",
+					linehl = "Visual",
+					numhl = "DiagnosticSignWarn",
+				},
+			}
 
-    vim.keymap.set('n', '<leader>Dc', dap.continue, { desc = '[c]ontinue' })
-    vim.keymap.set('n', '<leader>Di', dap.step_into, { desc = 'step [i]nto' })
-    vim.keymap.set('n', '<leader>Db', dap.step_back, { desc = 'step [b]ack' })
-    vim.keymap.set('n', '<leader>Do', dap.step_over, { desc = 'step [o]ver' })
-    vim.keymap.set('n', '<leader>Du', dap.step_out, { desc = 'step o[u]t' })
+			vim.fn.sign_define("DapBreakpoint", dap_signs.breakpoint)
+			vim.fn.sign_define("DapBreakpointRejected", dap_signs.breakpoint_rejected)
+			vim.fn.sign_define("DapStopped", dap_signs.stopped)
+		end,
+	},
+	{
+		"rcarriga/nvim-dap-ui",
+		dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" },
+		keys = {
+			{
+				"<leader>DU",
+				function()
+					require("dapui").toggle()
+				end,
+				desc = "toggle [U]I",
+			},
+		},
+		config = function()
+			local dap = require("dap")
+			local dapui = require("dapui")
 
-    vim.keymap.set('n', '<leader>Dt', dap.toggle_breakpoint, { desc = '[t]oggle breakpoint' })
-    vim.keymap.set('n', '<leader>DU', dapui.toggle, { desc = 'toggle [U]I' })
+			-- Dap UI setup
+			-- For more information, see |:help nvim-dap-ui|
+			dapui.setup({
+				icons = { expanded = "▾", collapsed = "▸", current_frame = "*" },
+				controls = {
+					icons = {
+						pause = "⏸",
+						play = "▶",
+						step_into = "⏎",
+						step_over = "⏭",
+						step_out = "⏮",
+						step_back = "b",
+						run_last = "▶▶",
+						terminate = "⏹",
+						disconnect = "⏏",
+					},
+				},
+			})
 
-    local dap_signs = {
-      breakpoint = {
-        text = "",
-        texthl = "DiagnosticSignError",
-        linehl = "",
-        numhl = "",
-      },
-      breakpoint_rejected = {
-        text = "",
-        texthl = "DiagnosticSignError",
-        linehl = "",
-        numhl = "",
-      },
-      stopped = {
-        text = "",
-        texthl = "DiagnosticSignWarn",
-        linehl = "Visual",
-        numhl = "DiagnosticSignWarn",
-      }
-    }
-    vim.fn.sign_define("DapBreakpoint", dap_signs.breakpoint)
-    vim.fn.sign_define("DapBreakpointRejected", dap_signs.breakpoint_rejected)
-    vim.fn.sign_define("DapStopped", dap_signs.stopped)
-
-    -- Dap UI setup
-    -- For more information, see |:help nvim-dap-ui|
-    dapui.setup {
-      -- Set icons to characters that are more likely to work in every terminal.
-      --    Feel free to remove or use ones that you like more! :)
-      --    Don't feel like these are good choices.
-      icons = { expanded = '▾', collapsed = '▸', current_frame = '*' },
-      controls = {
-        icons = {
-          pause = '⏸',
-          play = '▶',
-          step_into = '⏎',
-          step_over = '⏭',
-          step_out = '⏮',
-          step_back = 'b',
-          run_last = '▶▶',
-          terminate = '⏹',
-          disconnect = '⏏',
-        },
-      },
-    }
-
-
-    dap.listeners.after.event_initialized['dapui_config'] = dapui.open
-    dap.listeners.before.event_terminated['dapui_config'] = dapui.close
-    dap.listeners.before.event_exited['dapui_config'] = dapui.close
-
-    -- Install golang specific config
-    require('dap-go').setup {
-      delve = {
-        -- On Windows delve must be run attached or it crashes.
-        -- See https://github.com/leoluz/nvim-dap-go/blob/main/README.md#configuring
-        detached = vim.fn.has 'win32' == 0,
-      },
-    }
-  end,
+			dap.listeners.after.event_initialized["dapui_config"] = dapui.open
+			dap.listeners.before.event_terminated["dapui_config"] = dapui.close
+			dap.listeners.before.event_exited["dapui_config"] = dapui.close
+		end,
+	},
+	{
+		"leoluz/nvim-dap-go",
+		opts = {
+			delve = {
+				-- On Windows delve must be run attached or it crashes.
+				-- See https://github.com/leoluz/nvim-dap-go/blob/main/README.md#configuring
+				detached = vim.fn.has("win32") == 0,
+			},
+		},
+		ft = "go",
+		dependencies = {
+			"mfussenegger/nvim-dap",
+		},
+	},
+	{
+		"nicholasmata/nvim-dap-cs",
+		ft = "cs",
+		config = true,
+		dependencies = {
+			"mfussenegger/nvim-dap",
+		},
+	},
 }
