@@ -9,6 +9,7 @@ return {
 
 	-- "gc" to comment visual regions/lines
 	{ "numToStr/Comment.nvim", opts = {} },
+	{ "JoosepAlviste/nvim-ts-context-commentstring" },
 	-- documentation comments
 	{
 		"kkoomen/vim-doge",
@@ -17,5 +18,11 @@ return {
 			{ "gcd", "<cmd>DogeGenerate<cr>", desc = "generate documentation comment" },
 		},
 		build = ":call doge#install()",
+		init = function()
+			vim.g.doge_javascript_settings = {
+				destructuring_props = 1,
+				omit_redundant_param_types = 1,
+			}
+		end,
 	},
 }
