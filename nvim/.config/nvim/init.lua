@@ -32,6 +32,8 @@ vim.g.skip_ts_context_commentstring_module = true
 
 -- Enable break indent
 vim.opt.breakindent = true
+vim.opt.expandtab = true
+vim.opt.autoindent = true
 vim.opt.shiftwidth = 2 -- the number of spaces inserted for each indentation
 vim.opt.tabstop = 2 -- insert 2 spaces for a tab
 
@@ -97,8 +99,8 @@ for type, icon in pairs(signs) do
 end
 vim.keymap.set("n", "<leader>lp", vim.diagnostic.goto_prev, { desc = "[p]revious message" })
 vim.keymap.set("n", "<leader>ln", vim.diagnostic.goto_next, { desc = "[n]ext message" })
-vim.keymap.set("n", "<leader>de", vim.diagnostic.open_float, { desc = "show [e]rror" })
-vim.keymap.set("n", "<leader>dq", vim.diagnostic.setloclist, { desc = "show [q]uickfix list" })
+vim.keymap.set("n", "<leader>le", vim.diagnostic.open_float, { desc = "show [e]rror" })
+vim.keymap.set("n", "<leader>lq", vim.diagnostic.setloclist, { desc = "show [q]uickfix list" })
 
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
 -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which

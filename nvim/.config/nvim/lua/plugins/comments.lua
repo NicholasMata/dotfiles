@@ -19,6 +19,7 @@ return {
 		},
 		build = ":call doge#install()",
 		init = function()
+			vim.g.doge_enable_mappings = 0
 			vim.g.doge_javascript_settings = {
 				destructuring_props = 1,
 				omit_redundant_param_types = 1,

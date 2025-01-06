@@ -26,19 +26,19 @@ return {
 			})
 
 			-- Basic debugging keymaps, feel free to change to your liking!
-			vim.keymap.set("n", "<leader>Dg", dap.session, { desc = "[g]et session" })
-			vim.keymap.set("n", "<leader>Ds", dap.continue, { desc = "[s]tart" })
-			vim.keymap.set("n", "<leader>Dp", dap.pause, { desc = "[p]ause" })
-			vim.keymap.set("n", "<leader>Dd", dap.disconnect, { desc = "[d]isconnect" })
-			vim.keymap.set("n", "<leader>Dq", dap.close, { desc = "[q]uit" })
+			vim.keymap.set("n", "<leader>dg", dap.session, { desc = "[g]et session" })
+			vim.keymap.set("n", "<leader>ds", dap.continue, { desc = "[s]tart" })
+			vim.keymap.set("n", "<leader>dp", dap.pause, { desc = "[p]ause" })
+			vim.keymap.set("n", "<leader>dd", dap.disconnect, { desc = "[d]isconnect" })
+			vim.keymap.set("n", "<leader>dq", dap.close, { desc = "[q]uit" })
 
-			vim.keymap.set("n", "<leader>Dc", dap.continue, { desc = "[c]ontinue" })
-			vim.keymap.set("n", "<leader>Di", dap.step_into, { desc = "step [i]nto" })
-			vim.keymap.set("n", "<leader>Db", dap.step_back, { desc = "step [b]ack" })
-			vim.keymap.set("n", "<leader>Do", dap.step_over, { desc = "step [o]ver" })
-			vim.keymap.set("n", "<leader>Du", dap.step_out, { desc = "step o[u]t" })
+			vim.keymap.set("n", "<leader>dc", dap.continue, { desc = "[c]ontinue" })
+			vim.keymap.set("n", "<leader>di", dap.step_into, { desc = "step [i]nto" })
+			vim.keymap.set("n", "<leader>db", dap.step_back, { desc = "step [b]ack" })
+			vim.keymap.set("n", "<leader>do", dap.step_over, { desc = "step [o]ver" })
+			vim.keymap.set("n", "<leader>du", dap.step_out, { desc = "step o[u]t" })
 
-			vim.keymap.set("n", "<leader>Dt", dap.toggle_breakpoint, { desc = "[t]oggle breakpoint" })
+			vim.keymap.set("n", "<leader>dt", dap.toggle_breakpoint, { desc = "[t]oggle breakpoint" })
 
 			local dap_signs = {
 				breakpoint = {
@@ -71,7 +71,7 @@ return {
 		dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" },
 		keys = {
 			{
-				"<leader>DU",
+				"<leader>dU",
 				function()
 					require("dapui").toggle()
 				end,
@@ -123,6 +123,7 @@ return {
 	{
 		"nicholasmata/nvim-dap-cs",
 		ft = "cs",
+		dir = "~/Developer/nvim-dap-cs",
 		config = true,
 		dependencies = {
 			"mfussenegger/nvim-dap",

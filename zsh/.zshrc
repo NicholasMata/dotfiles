@@ -38,7 +38,14 @@ zinit snippet OMZP::git
 zinit snippet OMZP::command-not-found
 
 # Load completions
-autoload -Uz compinit && compinit
+autoload -Uz compinit
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' cache-path ~/.zsh/cache
+if [[ -f ~/.zcompdump && ~/.zcompdump -nt ~/.zshrc ]]; then 
+  compinit -C
+else
+  compinit
+fi
 
 zinit cdreplay -q
 
@@ -90,17 +97,6 @@ zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls -A --color $realpath'
 
 # Speed up completions
 zstyle ':completion:*' accept-exact '*(N)'
-zstyle ':completion:*' use-cache on
-zstyle ':completion:*' cache-path ~/.zsh/cache
-WORDCHARS=${WORDCHARS//\/[&.;]}                                 # Don't consider certain characters part of the word
-# fpath=(~/.zfunc ~/.zsh/completions $fpath)
-# autoload -Uz compinit
-# if [[ -n ~/.zcompdump(#qN.mh+24) ]]; then
-#   compinit
-#   # kitty + complete setup zsh | source /dev/stdin
-# else
-#   compinit -C
-# fi
 
 
 # Auto-cd
@@ -114,11 +110,14 @@ export FZF_DEFAULT_COMMAND='rg --files --hidden --smart-case --glob "!.git/*"'
 
 # bind UP and DOWN arrow keys to history substring search
 zmodload zsh/terminfo
-bindkey "$terminfo[kcuu1]" history-substring-search-up
-bindkey "$terminfo[kcud1]" history-substring-search-down
+# bindkey "$terminfo[kcuu1]" history-substring-search-up
+# bindkey "$terminfo[kcud1]" history-substring-search-down
 
-bindkey '^[[A' history-substring-search-up
-bindkey '^[[B' history-substring-search-down
+bindkey -M vicmd 'k' history-substring-search-up
+bindkey -M vicmd 'j' history-substring-search-down
+
+# bindkey '^[[A' history-substring-search-up
+# bindkey '^[[B' history-substring-search-down
 
  # Keybindings
 bindkey "\e[1;3D" backward-word # ⌥←
@@ -128,8 +127,9 @@ bindkey '\e[1;9D' beginning-of-line # ⌘←
 bindkey '\e[1;9C' end-of-line # ⌘→
 bindkey '\e[107;9u' clear-screen
 bindkey '^[^?' backward-delete-word
-bindkey '^k' history-substring-search-up
-bindkey '^j' history-substring-search-down
+
+# bindkey '^[[46;5u' history-substring-search-up # ctrl + .
+# bindkey '^[[44;5u' history-substring-search-down # ctrl + ,
 
 # Aliases
 alias ekitty="nvim ~/.config/kitty/kitty.conf"
@@ -142,7 +142,16 @@ alias ll='ls -laG'
 # Shell integrations
 eval "$(fzf --zsh)"
 
-export NVM_DIR="$HOME/.nvm"
+# Lazy load nvm
+lazy_load_nvm() {
+  export NVM_DIR="$HOME/.nvm"
 
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+}
+
+nvm() {
+  unset -f nvm
+  lazy_load_nvm
+  nvm "$@"
+}

@@ -144,6 +144,9 @@ return {
 				-- tsserver = {},
 				--
 				--
+				bashls = {
+					filetypes = { "sh", "zsh" },
+				},
 				omnisharp = {
 					handlers = {
 						["textDocument/definition"] = require("omnisharp_extended").definition_handler,
@@ -181,6 +184,7 @@ return {
 			local ensure_installed = vim.tbl_keys(servers or {})
 			vim.list_extend(ensure_installed, {
 				"stylua", -- Used to format Lua code
+				"bash-language-server",
 			})
 			require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 

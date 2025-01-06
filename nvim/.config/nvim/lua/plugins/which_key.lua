@@ -8,14 +8,15 @@ return {
 			which_key.setup()
 
 			-- Document existing key chains
-			which_key.register({
-				l = { name = "[l]sp", _ = "which_key_ignore" },
-				d = { name = "[d]iagnostic", _ = "which_key_ignore" },
-				D = { name = "[D]ebug", _ = "which_key_ignore" },
-				s = { name = "[s]earch", _ = "which_key_ignore" },
-				g = { name = "[g]it", _ = "which_key_ignore" },
-				o = { name = "[o]s", _ = "which_key_ignore" },
-				v = { ":call system('say '.shellescape(expand('<cword>')).' &')<CR>", "[v]oice word" },
+			which_key.add({
+				{ "<leader>m", group = "[m]arkdown" },
+				{ "<leader>mp", group = "[p]review" },
+				{ "<leader>l", group = "[l]sp" },
+				{ "<leader>d", group = "[d]ebug" },
+				{ "<leader>t", group = "[t]elescope" },
+				{ "<leader>g", group = "[g]it" },
+				{ "<leader>o", group = "[o]s" },
+				{ "<leader>v", ":call system('say '.shellescape(expand('<cword>')).' &')<CR>", name = "[v]oice word" },
 			}, { mode = "n", prefix = "<leader>" })
 			-- visual mode
 			--
