@@ -110,6 +110,8 @@ alt-1 = 'workspace 1'
 alt-2 = 'workspace 2'
 alt-3 = 'workspace 3'
 alt-4 = 'workspace 4'
+alt-a = 'workspace A' # for Android
+alt-x = 'workspace X' # for Xcode
 alt-b = 'workspace B' # for Browser
 alt-e = 'workspace E' # for File Explorer (Finder)
 alt-m = 'workspace M' # for Mail
@@ -121,6 +123,8 @@ alt-shift-1 = 'move-node-to-workspace 1'
 alt-shift-2 = 'move-node-to-workspace 2'
 alt-shift-3 = 'move-node-to-workspace 3'
 alt-shift-4 = 'move-node-to-workspace 4'
+alt-shift-a = 'move-node-to-workspace A' # for Android
+alt-shift-x = 'move-node-to-workspace X' # for Xcode
 alt-shift-b = 'move-node-to-workspace B' # for Browser
 alt-shift-e = 'move-node-to-workspace E' # for File Explorer (Finder)
 alt-shift-m = 'move-node-to-workspace M' # for Mail
@@ -151,7 +155,19 @@ alt-shift-l = ['join-with right', 'mode main']
 
 
 [[on-window-detected]]
+if.app-id = 'com.google.android.studio'
+run = "move-node-to-workspace A"
+
+[[on-window-detected]]
+if.app-id = 'com.apple.dt.xcode'
+run = "move-node-to-workspace X"
+
+[[on-window-detected]]
 if.app-id = 'com.apple.Safari'
+run = "move-node-to-workspace B"
+
+[[on-window-detected]]
+if.app-id = 'com.microsoft.edgemac'
 run = "move-node-to-workspace B"
 
 [[on-window-detected]]
@@ -164,6 +180,12 @@ run = "move-node-to-workspace T"
 
 [[on-window-detected]]
 if.app-id = 'com.apple.Music'
-run = "move-node-to-workspace T"
+run = "move-node-to-workspace M"
 
+[[on-window-detected]]
+if.app-id = 'com.microsoft.teams2'
+run = "move-node-to-workspace M"
 
+[[on-window-detected]]
+if.app-id = 'com.microsoft.Outlook'
+run = "move-node-to-workspace M"
