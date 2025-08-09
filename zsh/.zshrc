@@ -1,4 +1,4 @@
-# zmodload zsh/zprof # Enable for profiling
+#zmodload zsh/zprof # Enable for profiling
 # -------------------------------
 # Powerlevel10k Instant Prompt
 # -------------------------------
@@ -23,7 +23,7 @@ ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
 source "${ZINIT_HOME}/zinit.zsh"
 
 # -------------------------------
-# Zinit Plugins
+# Zinit Plugins & Snippets (Non-dependent)
 # -------------------------------
 zinit ice depth=1
 zinit light romkatv/powerlevel10k
@@ -32,10 +32,8 @@ zinit light romkatv/zsh-defer
 zinit light jeffreytse/zsh-vi-mode
 
 for plugin in \
-  zsh-users/zsh-syntax-highlighting \
   zsh-users/zsh-completions \
   zsh-users/zsh-autosuggestions \
-  Aloxaf/fzf-tab \
   joshskidmore/zsh-fzf-history-search; do
   zinit ice wait'0' lucid
   zinit light $plugin
@@ -46,16 +44,18 @@ zinit snippet OMZP::git
 zinit ice wait'0' lucid
 zinit snippet OMZP::command-not-found
 
-
-source $(brew --prefix)/share/zsh-history-substring-search/zsh-history-substring-search.zsh
-
 # -------------------------------
 # Completion Setup
 # -------------------------------
 autoload -Uz compinit
 compinit -C
 
+zinit ice wait'0' lucid
+zinit light Aloxaf/fzf-tab
+
 zinit cdreplay -q
+
+source $(brew --prefix)/share/zsh-history-substring-search/zsh-history-substring-search.zsh
 
 zstyle ':completion:*' use-cache on
 zstyle ':completion:*' cache-path ~/.zsh/cache
@@ -86,7 +86,7 @@ setopt auto_cd
 # -------------------------------
 # History Configuration
 # -------------------------------
-HISTSIZE=5000
+HISTSIZE=100000
 HISTFILE=~/.zhistory
 SAVEHIST=$HISTSIZE
 HISTDUP=erase
@@ -115,8 +115,17 @@ export LESS=-r
 # -------------------------------
 export FZF_DEFAULT_OPTS='--bind=alt-n:preview-down --bind=alt-p:preview-up'
 export FZF_DEFAULT_COMMAND='rg --files --hidden --smart-case --glob "!.git/*"'
-[[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh
-eval "$(fzf --zsh)"
+if [[ -f ~/.fzf.zsh ]]; then
+  source ~/.fzf.zsh
+else
+  eval "$(fzf --zsh)"
+fi
+
+# -------------------------------
+# Needs to be last Zinit Plugin
+# -------------------------------
+zinit ice wait'0' lucid
+zinit light zsh-users/zsh-syntax-highlighting
 
 # -------------------------------
 # Key Bindings
@@ -147,4 +156,4 @@ export NVM_DIR="$HOME/.nvm"
 [[ -s "$NVM_DIR/nvm.sh" ]] && zsh-defer source "$NVM_DIR/nvm.sh"
 [[ -s "$NVM_DIR/bash_completion" ]] && zsh-defer source "$NVM_DIR/bash_completion"
 
-# zprof # Enable for profiling
+#zprof # Enable for profiling
