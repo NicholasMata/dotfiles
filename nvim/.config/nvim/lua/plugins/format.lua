@@ -8,7 +8,11 @@ return {
 			{
 				"<leader>fb",
 				function()
-					require("conform").format({ async = true, lsp_fallback = true })
+					require("conform").format({
+						async = true,
+						lsp_fallback = true,
+						bufnr = vim.api.nvim_get_current_buf(),
+					})
 				end,
 				mode = "",
 				desc = "[f]ormat buffer",
@@ -16,6 +20,7 @@ return {
 		},
 		opts = {
 			notify_on_error = false,
+			stop_after_first = true,
 			format_on_save = function(bufnr)
 				-- Disable with a global or buffer-local variable
 				if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
@@ -32,16 +37,21 @@ return {
 			end,
 			formatters_by_ft = {
 				lua = { "stylua" },
-				typescriptreact = { "prettierd", "prettier" },
-				typescript = { "prettierd", "prettier" },
-				javascriptreact = { "prettierd", "prettier" },
-				javascript = { "prettierd", "prettier" },
+				typescriptreact = { "biome", "prettierd", "prettier", stop_after_first = true },
+				typescript = { "biome", "prettierd", "prettier", stop_after_first = true },
+				javascriptreact = { "biome", "prettierd", "prettier", stop_after_first = true },
+				javascript = { "biome", "prettierd", "prettier", stop_after_first = true },
+				json = { "biome" },
+				xml = {
+					command = "xmllint",
+					args = { "--format", "-" },
+					stdin = true,
+				},
 			},
 		},
 		config = function(_, opts)
 			require("conform").setup(opts)
 
-			-- Define the commands
 			vim.api.nvim_create_user_command("FormatDisable", function(args)
 				if args.bang then
 					-- FormatDisable! will disable formatting just for this buffer
