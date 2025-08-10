@@ -4,20 +4,6 @@ return {
 		-- Autoformat
 		"stevearc/conform.nvim",
 		lazy = false,
-		keys = {
-			{
-				"<leader>fb",
-				function()
-					require("conform").format({
-						async = true,
-						lsp_fallback = true,
-						bufnr = vim.api.nvim_get_current_buf(),
-					})
-				end,
-				mode = "",
-				desc = "[f]ormat buffer",
-			},
-		},
 		opts = {
 			notify_on_error = false,
 			stop_after_first = true,
@@ -75,14 +61,17 @@ return {
 				"n",
 				"<leader>fd",
 				":FormatDisable<CR>",
-				{ noremap = true, silent = true, desc = "[F]ormat [d]isable" }
+				{ noremap = true, silent = true, desc = "[f]ormat [d]isable" }
 			)
 			vim.api.nvim_set_keymap(
 				"n",
 				"<leader>fe",
 				":FormatEnable<CR>",
-				{ noremap = true, silent = true, desc = "[F]ormat [e]nable" }
+				{ noremap = true, silent = true, desc = "[f]ormat [e]nable" }
 			)
+			vim.keymap.set("n", "<leader>fb", function()
+				require("conform").format({ async = true, lsp_fallback = true })
+			end, { noremap = true, silent = true, desc = "[f]ormat [b]uffer" })
 		end,
 	},
 }
