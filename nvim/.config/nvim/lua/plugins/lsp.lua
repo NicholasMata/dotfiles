@@ -58,6 +58,10 @@ return {
 					-- or a suggestion from your LSP for this to activate.
 					map("<leader>lc", vim.lsp.buf.code_action, "[c]ode action")
 
+					map("<leader>ls", function()
+						vim.lsp.buf.code_action({ context = { only = { "source" } } })
+					end, "[s]ource action")
+
 					-- Opens a popup that displays documentation about the word under your cursor
 					--  See `:help K` for why this keymap.
 					map("K", vim.lsp.buf.hover, "[K]eyword documentation")
