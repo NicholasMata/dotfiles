@@ -69,15 +69,6 @@ return {
 	{
 		"rcarriga/nvim-dap-ui",
 		dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" },
-		keys = {
-			{
-				"<leader>dU",
-				function()
-					require("dapui").toggle()
-				end,
-				desc = "toggle [U]I",
-			},
-		},
 		config = function()
 			local dap = require("dap")
 			local dapui = require("dapui")
@@ -104,6 +95,11 @@ return {
 			dap.listeners.after.event_initialized["dapui_config"] = dapui.open
 			dap.listeners.before.event_terminated["dapui_config"] = dapui.close
 			dap.listeners.before.event_exited["dapui_config"] = dapui.close
+
+			vim.keymap.set("n", "<leader>dU", dapui.toggle, { desc = "toggle [U]I" })
+			vim.keymap.set("n", "<leader>de", dapui.eval, { desc = "[e]val" })
+			vim.keymap.set("v", "<leader>de", dapui.eval, { desc = "[e]val" })
+			vim.keymap.set("n", "<leader>dr", dap.repl.toggle, { desc = "[r]epl" })
 		end,
 	},
 	{
