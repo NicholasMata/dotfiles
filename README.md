@@ -22,10 +22,6 @@ I previously used SKHD and Yabai while it does use native macOS Desktops it uses
 which just hides and shows windows and the concept of desktops is all virtual. Does mean I lose some builtin macOS functionality like realizing all windows. I am okay
 with the compromise.
 
-### Yabai (Tiling Window Manager)
-
-I use yabai as my tiling window manager. This is because I am on MacOS and I find it to be the best one.
-
 ### [Neovim](https://neovim.io/)
 
 I use neovim as my main editor. I have tried a bunch of different editors in the past 2 decades this is my favorite. My setup is very customized to my specific needs,
