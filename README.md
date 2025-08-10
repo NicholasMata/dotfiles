@@ -2,28 +2,34 @@
 
 This is a repository to store my personal dotfiles. I would recommend creating and setting up your own dotfiles.
 
-NOTE: I use GNU stow to apply all the dotfiles in the repo to my home directory.
+NOTE: I use GNU stow to apply all the dotfiles in the repo to my home directory. There is a makefile to make it easier to apply.
 
 ## Features
 
-### [Kitty](https://sw.kovidgoyal.net/kitty/)
+### [Ghostty](https://ghostty.org/)
 
-I use kitty as my terminal the dotfiles located in this repo enable the following features with this terminal.
+I use Ghostty as my terminal the dotfiles located in this repo enable the following features with this terminal.
+- Specific rose-pine theme for light and dark mode
+- Font setup
+- Terminal background
+- Dock icon customization
+- Window decorations
 
-- Both light and dark themes
-- Other terminal specific styling
+### [Aerospace](https://github.com/nikitabobko/AeroSpace)
 
-### SKHD
-
-I use SKHD specifically with yabai for keyboard shortcuts. It can do much more than this, but this is my use case.
+I use Aerospace as my tiling window manager. This is because I am on macOS and find it to be the best one.<br/>
+I previously used SKHD and Yabai while it does use native macOS Desktops it uses non public APIs to do so. macOS updates would break Yabai so I switched to Aerospace
+which just hides and shows windows and the concept of desktops is all virtual. Does mean I lose some builtin macOS functionality like realizing all windows. I am okay
+with the compromise.
 
 ### Yabai (Tiling Window Manager)
 
 I use yabai as my tiling window manager. This is because I am on MacOS and I find it to be the best one.
 
-### LunarVim
+### [Neovim](https://neovim.io/)
 
-I use LunarVim as my chosen editor. In the future I would like move off this to use pure neovim.
+I use neovim as my main editor. I have tried a bunch of different editors in the past 2 decades this is my favorite. My setup is very customized to my specific needs,
+previously I used to use LunarVim but found I real increase performance and personalization with custom neovim setup.
 
 ### Powerline10k
 
@@ -43,7 +49,7 @@ My configuration mainly just has the prompt styled how I like it. I just modifie
 
 [This](https://github.com/zsh-users/zsh-syntax-highlighting) is used to add syntax highlighting for terminal commands.
 
-## Keymaps
+## Keymaps (Outdated)
 
 I needed the below so I could visually see all my keymaps, thinking of making a web app for this.
 
