@@ -1,57 +1,106 @@
-# Enable Powerlevel10k instant prompt. Should stay as close to the top of ~/.zshrc.
-export NVM_DIR="$HOME/.nvm"
-
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-# # Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
+#zmodload zsh/zprof # Enable for profiling
+# -------------------------------
+# Powerlevel10k Instant Prompt
+# -------------------------------
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-# prompt
-source ~/.powerlevel10k/powerlevel10k.zsh-theme
-
-source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-
-if type brew &>/dev/null; then
-  FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
-
-  autoload -Uz compinit
-  compinit
+# -------------------------------
+# Homebrew Environment Setup
+# -------------------------------
+if [[ -f "/opt/homebrew/bin/brew" ]]; then
+  eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 
-# source ~/.zsh/catppuccin_mocha-zsh-syntax-highlighting.zsh
+# -------------------------------
+# Zinit Setup
+# -------------------------------
+ZVM_INIT_MODE=sourcing
+ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
+[ ! -d $ZINIT_HOME ] && mkdir -p "$(dirname $ZINIT_HOME)"
+[ ! -d $ZINIT_HOME/.git ] && git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
+source "${ZINIT_HOME}/zinit.zsh"
 
-source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+# -------------------------------
+# Zinit Plugins & Snippets (Non-dependent)
+# -------------------------------
+zinit ice depth=1
+zinit light romkatv/powerlevel10k
+
+zinit light romkatv/zsh-defer
+zinit light jeffreytse/zsh-vi-mode
+
+for plugin in \
+  zsh-users/zsh-completions \
+  zsh-users/zsh-autosuggestions \
+  joshskidmore/zsh-fzf-history-search; do
+  zinit ice wait'0' lucid
+  zinit light $plugin
+done
+
+zinit ice wait'0' lucid
+zinit snippet OMZP::git
+zinit ice wait'0' lucid
+zinit snippet OMZP::command-not-found
+
+# -------------------------------
+# Completion Setup
+# -------------------------------
+autoload -Uz compinit
+compinit -C
+
+zinit ice wait'0' lucid
+zinit light Aloxaf/fzf-tab
+
+zinit cdreplay -q
+
 source $(brew --prefix)/share/zsh-history-substring-search/zsh-history-substring-search.zsh
 
-# bind UP and DOWN arrow keys to history substring search
-zmodload zsh/terminfo
-bindkey "$terminfo[kcuu1]" history-substring-search-up
-bindkey "$terminfo[kcud1]" history-substring-search-down
-bindkey '^[[A' history-substring-search-up
-bindkey '^[[B' history-substring-search-down
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' cache-path ~/.zsh/cache
+zstyle ':completion:*' completer _complete
+zstyle ':completion:*' matcher-list '' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' '+l:|=* r:|=*'
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+zstyle ':completion:*' rehash true
+zstyle ':completion:*' menu no
+zstyle ':completion:*' accept-exact '*(N)'
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls -A --color $realpath'
 
-# General options
+# -------------------------------
+# Prompt Configuration
+# -------------------------------
+[[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh
+
+# -------------------------------
+# General Options
+# -------------------------------
 setopt correct
 setopt extendedglob
 setopt nocaseglob
 setopt rcexpandparam
 setopt nocheckjobs
 setopt numericglobsort
+setopt auto_cd
 
-# History
+# -------------------------------
+# History Configuration
+# -------------------------------
+HISTSIZE=100000
 HISTFILE=~/.zhistory
-HISTSIZE=1000
-SAVEHIST=500
+SAVEHIST=$HISTSIZE
+HISTDUP=erase
 setopt appendhistory
-setopt histignorealldups
-# Don't want common history between shells
-unsetopt share_history
+setopt sharehistory
+setopt hist_ignore_space
+setopt hist_ignore_all_dups
+setopt hist_save_no_dups
+setopt hist_ignore_dups
+setopt hist_find_no_dups
 
-# Color man pages
+# -------------------------------
+# Man Page Colors
+# -------------------------------
 export LESS_TERMCAP_mb=$'\E[01;32m'
 export LESS_TERMCAP_md=$'\E[01;32m'
 export LESS_TERMCAP_me=$'\E[0m'
@@ -61,64 +110,50 @@ export LESS_TERMCAP_ue=$'\E[0m'
 export LESS_TERMCAP_us=$'\E[01;36m'
 export LESS=-r
 
-# Completion
-zstyle ':completion:*' completer _complete
-zstyle ':completion:*' matcher-list '' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' '+l:|=* r:|=*'
-zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"         # Colored completion (different colors for dirs/files/etc)
-zstyle ':completion:*' rehash true                              # automatically find new executables in path
-# Speed up completions
-zstyle ':completion:*' accept-exact '*(N)'
-zstyle ':completion:*' use-cache on
-zstyle ':completion:*' cache-path ~/.zsh/cache
-WORDCHARS=${WORDCHARS//\/[&.;]}                                 # Don't consider certain characters part of the word
-fpath=(~/.zfunc ~/.zsh/completions $fpath)
-autoload -Uz compinit
-if [[ -n ~/.zcompdump(#qN.mh+24) ]]; then
-  compinit
-  # kitty + complete setup zsh | source /dev/stdin
+# -------------------------------
+# FZF Configuration
+# -------------------------------
+export FZF_DEFAULT_OPTS='--bind=alt-n:preview-down --bind=alt-p:preview-up'
+export FZF_DEFAULT_COMMAND='rg --files --hidden --smart-case --glob "!.git/*"'
+if [[ -f ~/.fzf.zsh ]]; then
+  source ~/.fzf.zsh
 else
-  compinit -C
+  eval "$(fzf --zsh)"
 fi
 
+# -------------------------------
+# Needs to be last Zinit Plugin
+# -------------------------------
+zinit ice wait'0' lucid
+zinit light zsh-users/zsh-syntax-highlighting
 
-# Auto-cd
-setopt auto_cd
-
-# Vi mode
-bindkey -v
-export KEYTIMEOUT=1
-autoload -U edit-command-line
-zle -N edit-command-line
-bindkey -M vicmd v edit-command-line
-
-# FZF
-export FZF_DEFAULT_COMMAND='rg --files --hidden --smart-case --glob "!.git/*"'
-# source $(brew --prefix)/share/fzf/key-bindings.zsh
-# source $(brew --prefix)/share/fzf/completion.zsh
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-bindkey "$terminfo[kcuu1]" history-substring-search-up
-bindkey "$terminfo[kcud1]" history-substring-search-down
-bindkey '^[[A' history-substring-search-up
-bindkey '^[[B' history-substring-search-down
-
- # Keybindings
-bindkey "\e[1;3D" backward-word # ⌥←
-bindkey "\e[1;3C" forward-word # ⌥→
-
-bindkey '\e[1;9D' beginning-of-line # ⌘←
-bindkey '\e[1;9C' end-of-line # ⌘→
-bindkey '\e[107;9u' clear-screen
+# -------------------------------
+# Key Bindings
+# -------------------------------
+zmodload zsh/terminfo
+bindkey -M vicmd 'k' history-substring-search-up
+bindkey -M vicmd 'j' history-substring-search-down
+bindkey "\e[1;3D" backward-word       # ⌥←
+bindkey "\e[1;3C" forward-word        # ⌥→
+bindkey "\e[1;9D" beginning-of-line   # ⌘←
+bindkey "\e[1;9C" end-of-line         # ⌘→
+bindkey "\e[107;9u" clear-screen
 bindkey '^[^?' backward-delete-word
 
+# -------------------------------
 # Aliases
-alias ekitty="lvim ~/.config/kitty/kitty.conf"
-alias ezsh="lvim ~/.zshrc && source ~/.zshrc"
-alias vim="lvim"
-
+# -------------------------------
+alias ekitty="nvim ~/.config/kitty/kitty.conf"
+alias ezsh="nvim ~/.zshrc && source ~/.zshrc"
+alias vim="nvim"
 alias ls='ls -G'
 alias ll='ls -laG'
 
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+# -------------------------------
+# NVM Setup with zsh-defer
+# -------------------------------
+export NVM_DIR="$HOME/.nvm"
+[[ -s "$NVM_DIR/nvm.sh" ]] && zsh-defer source "$NVM_DIR/nvm.sh"
+[[ -s "$NVM_DIR/bash_completion" ]] && zsh-defer source "$NVM_DIR/bash_completion"
 
+#zprof # Enable for profiling
