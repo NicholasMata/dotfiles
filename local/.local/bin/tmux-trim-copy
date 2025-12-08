@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+# Trim leading/trailing blank lines, and leading/trailing whitespace per line.
+awk '
+  { a[NR]=$0 }
+  END {
+    # find first non-blank line
+    for (i = 1; i <= NR && a[i] ~ /^[[:space:]]*$/; i++); s = i
+    # find last non-blank line
+    for (j = NR; j >= 1 && a[j] ~ /^[[:space:]]*$/; j--); e = j
+
+    # print trimmed lines
+    for (k = s; k <= e; k++) {
+      sub(/^[[:space:]]+/, "", a[k])
+      sub(/[[:space:]]+$/, "", a[k])
+      print a[k]
+    }
+  }
+'

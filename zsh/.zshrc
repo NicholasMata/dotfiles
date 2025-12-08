@@ -156,4 +156,7 @@ export NVM_DIR="$HOME/.nvm"
 [[ -s "$NVM_DIR/nvm.sh" ]] && zsh-defer source "$NVM_DIR/nvm.sh"
 [[ -s "$NVM_DIR/bash_completion" ]] && zsh-defer source "$NVM_DIR/bash_completion"
 
+
+zsh-defer eval "$(zoxide init zsh --cmd cd)"
+
 #zprof # Enable for profiling

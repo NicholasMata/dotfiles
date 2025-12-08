@@ -159,7 +159,7 @@ if.app-id = 'com.google.android.studio'
 run = "move-node-to-workspace A"
 
 [[on-window-detected]]
-if.app-id = 'com.apple.dt.xcode'
+if.app-id = 'com.apple.dt.Xcode'
 run = "move-node-to-workspace X"
 
 [[on-window-detected]]
@@ -172,10 +172,6 @@ run = "move-node-to-workspace B"
 
 [[on-window-detected]]
 if.app-id = 'com.mitchellh.ghostty'
-run = "move-node-to-workspace T"
-
-[[on-window-detected]]
-if.app-id = 'net.kovidgoyal.kitty'
 run = "move-node-to-workspace T"
 
 [[on-window-detected]]

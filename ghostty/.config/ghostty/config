@@ -1,7 +1,8 @@
-theme = dark:rose-pine,light:rose-pine-dawn
+theme = dark:Rose Pine,light:Rose Pine Dawn
 background-opacity = 0.95
 window-decoration = false
 font-size = 16.0
+adjust-cell-width = 7%
 font-family = MesloLGS NF
 
 macos-icon = custom-style
@@ -11,3 +12,7 @@ mouse-hide-while-typing = true
 
 window-padding-x = 0
 window-padding-y = 0
+
+keybind = global:cmd+grave_accent=toggle_quick_terminal
+quick-terminal-position = top
+macos-icon = custom

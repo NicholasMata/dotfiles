@@ -86,19 +86,25 @@ vim.keymap.set({ "n", "v" }, "<leader>oY", [["+Y]], { desc = "[Y]ank line" })
 
 vim.keymap.set("n", "<leader>w", "<cmd>w!<CR>", { desc = "[w]rite buffer" })
 vim.keymap.set("n", "<leader>q", "<cmd>confirm q<CR>", { desc = "[q]uit" })
-vim.keymap.set("n", "<leader>c", "<cmd>bd<CR>", { desc = "[c]lose buffer" })
 
 -- Set highlight on search, but clear on pressing <Esc> in normal mode
 vim.opt.hlsearch = true
 vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
 
 -- Diagnostic keymaps
-vim.diagnostic.config({ virtual_text = false })
-local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
-for type, icon in pairs(signs) do
-	local hl = "DiagnosticSign" .. type
-	vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
-end
+vim.diagnostic.config({
+	virtual_text = false,
+	signs = {
+		-- enable signs
+		-- (you can also set `false` to turn them off)
+		text = {
+			[vim.diagnostic.severity.ERROR] = " ",
+			[vim.diagnostic.severity.WARN] = " ",
+			[vim.diagnostic.severity.INFO] = " ",
+			[vim.diagnostic.severity.HINT] = "󰠠 ",
+		},
+	},
+})
 vim.keymap.set("n", "<leader>lp", vim.diagnostic.goto_prev, { desc = "[p]revious message" })
 vim.keymap.set("n", "<leader>ln", vim.diagnostic.goto_next, { desc = "[n]ext message" })
 vim.keymap.set("n", "<leader>le", vim.diagnostic.open_float, { desc = "show [e]rror" })
@@ -162,6 +168,9 @@ vim.opt.rtp:prepend(lazypath)
 --
 -- NOTE: Here is where you install your plugins.
 require("lazy").setup("plugins", {
+	rocks = {
+		enabled = false,
+	},
 	ui = {
 		-- If you are using a Nerd Font: set icons to an empty table which will use the
 		-- default lazy.nvim defined Nerd Font icons, otherwise define a unicode icons table
