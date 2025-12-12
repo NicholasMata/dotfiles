@@ -1,7 +1,8 @@
 return {
-  { "nvim-treesitter/nvim-treesitter-context", config = true },
+  { "nvim-treesitter/nvim-treesitter-context", event = "BufReadPost", config = true },
   { -- Highlight, edit, and navigate code
     "nvim-treesitter/nvim-treesitter",
+    event = { "BufReadPost", "BufNewFile" },
     build = ":TSUpdate",
     opts = {
       ensure_installed = {

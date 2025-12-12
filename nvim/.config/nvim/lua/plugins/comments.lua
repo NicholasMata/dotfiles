@@ -9,7 +9,7 @@ return {
 
   -- "gc" to comment visual regions/lines
   { "numToStr/Comment.nvim", opts = {} },
-  { "JoosepAlviste/nvim-ts-context-commentstring" },
+  { "JoosepAlviste/nvim-ts-context-commentstring", event = "BufReadPost" },
   -- documentation comments
   {
     "kkoomen/vim-doge",
