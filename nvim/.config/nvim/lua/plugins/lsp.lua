@@ -29,7 +29,11 @@ return {
         opts = { library = { "lazy.nvim", { path = "snacks.nvim", words = { "Snacks" } } } },
       },
       { "Issafalcon/lsp-overloads.nvim", opts = { focusable = true } },
-      { "Hoffs/omnisharp-extended-lsp.nvim" },
+      {
+        "seblyng/roslyn.nvim",
+        ft = "cs",
+        opts = {},
+      },
     },
     config = function()
       vim.api.nvim_create_autocmd("LspAttach", {
@@ -165,12 +169,23 @@ return {
         bashls = {
           filetypes = { "sh", "zsh" },
         },
-        omnisharp = {
-          handlers = {
-            ["textDocument/definition"] = require("omnisharp_extended").definition_handler,
-            ["textDocument/typeDefinition"] = require("omnisharp_extended").type_definition_handler,
-            ["textDocument/references"] = require("omnisharp_extended").references_handler,
-            ["textDocument/implementation"] = require("omnisharp_extended").implementation_handler,
+        roslyn = {
+          cmd = {
+            "roslyn-language-server",
+            "--logLevel=Information",
+            "--extensionLogDirectory=" .. vim.fs.dirname(vim.lsp.log.get_filename()),
+            "--stdio",
+          },
+          settings = {
+            ["csharp|inlay_hints"] = {
+              csharp_enable_inlay_hints_for_implicit_object_creation = true,
+              csharp_enable_inlay_hints_for_implicit_variable_types = true,
+              csharp_enable_inlay_hints_for_lambda_parameter_types = true,
+              csharp_enable_inlay_hints_for_types = true,
+            },
+            ["csharp|code_lens"] = {
+              dotnet_enable_references_code_lens = true,
+            },
           },
         },
         lua_ls = {
@@ -209,7 +224,9 @@ return {
 
       -- You can add other tools here that you want Mason to install
       -- for you, so that they are available from within Neovim.
-      local ensure_installed = vim.tbl_keys(servers or {})
+      local ensure_installed = vim.tbl_filter(function(name)
+        return name ~= "roslyn"
+      end, vim.tbl_keys(servers or {}))
       vim.list_extend(ensure_installed, {
         "stylua", -- Used to format Lua code
         "bash-language-server",
