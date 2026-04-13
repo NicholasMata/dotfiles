@@ -105,8 +105,12 @@ vim.diagnostic.config({
     },
   },
 })
-vim.keymap.set("n", "<leader>lp", vim.diagnostic.goto_prev, { desc = "[p]revious message" })
-vim.keymap.set("n", "<leader>ln", vim.diagnostic.goto_next, { desc = "[n]ext message" })
+vim.keymap.set("n", "<leader>lp", function()
+  vim.diagnostic.jump({ count = -1, float = true })
+end, { desc = "[p]revious message" })
+vim.keymap.set("n", "<leader>ln", function()
+  vim.diagnostic.jump({ count = 1, float = true })
+end, { desc = "[n]ext message" })
 vim.keymap.set("n", "<leader>le", vim.diagnostic.open_float, { desc = "show [e]rror" })
 vim.keymap.set("n", "<leader>lq", vim.diagnostic.setloclist, { desc = "show [q]uickfix list" })
 
