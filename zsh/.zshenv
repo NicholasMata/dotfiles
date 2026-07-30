@@ -9,6 +9,7 @@ export VISUAL="nvim"
 export CLICOLOR=1
 
 export DOTNET_ROOT="/usr/local/share/dotnet"
+export HERDR_NAV_PASSTHROUGH_RE='^(fzf|lazygit)$'
 
 path_add "$HOME/.local/bin"
 path_add "$HOME/.dotnet/tools"

@@ -1,5 +1,30 @@
+onboarding = false
+[theme]
+name = "rose-pine"
+auto_switch = true
+light_name = "rose-pine-dawn"
+dark_name = "rose-pine"
+
+[terminal]
+new_cwd = "follow"
+shell_mode = "auto"
+
 [keys]
 prefix = "ctrl+space"
+
+settings = "prefix+shift+s"
+
+# Match tmux's split keys, while retaining Herdr's native aliases.
+# double_quote = " (stacked panes, equivalent to tmux split-window)
+# percent      = % (side-by-side panes, equivalent to tmux split-window -h)
+split_horizontal = ["prefix+s", "prefix+minus"]
+
+goto = "prefix+space"
+# Workspace picker list
+navigate_workspace_up = "k"
+navigate_workspace_down = "j"
+
+toggle_sidebar = "prefix+e"
 
 [[keys.command]]
 key = "ctrl+h"
