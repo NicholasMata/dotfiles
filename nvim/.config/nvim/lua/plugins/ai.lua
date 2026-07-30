@@ -27,7 +27,7 @@ return {
       inline = openai_strategy,
     },
     opts = {
-      log_level = "TRACE",
+      log_level = "ERROR",
     },
     adapters = {
       http = {
