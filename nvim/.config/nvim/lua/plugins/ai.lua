@@ -1,25 +1,60 @@
--- Default: OpenAI GPT-5
-local gpt5_strategy = {
-  adapter = {
-    name = "openai",
-    model = "gpt-5", -- make sure your account has access to GPT-5
-  },
+-- Default: Codex via ACP
+local codex_strategy = {
+  adapter = "codex",
+  model = "gpt-5.6-sol",
 }
 
--- Optional: Ollama (manual use)
-local ollama_strategy = {
+-- Default: OpenAI GPT-5
+local openai_strategy = {
   adapter = {
-    name = "ollama",
-    model = "codellama:7b",
+    name = "openai",
+    model = "gpt-5.6-sol", -- make sure your account has access to GPT-5
   },
 }
 
 return {
   "olimorris/codecompanion.nvim",
+  version = "^19.0.0",
   event = "VeryLazy",
   dependencies = {
     "nvim-lua/plenary.nvim",
     "nvim-treesitter/nvim-treesitter",
+  },
+  opts = {
+    -- Default strategies: GPT-5
+    interactions = {
+      chat = codex_strategy,
+      inline = openai_strategy,
+    },
+    opts = {
+      log_level = "TRACE",
+    },
+    adapters = {
+      http = {
+        -- OpenAI GPT-5
+        openai = function()
+          return require("codecompanion.adapters").extend("openai", {
+            env = {
+              api_key = [[cmd:security find-generic-password -a openai -s OPENAI_API_KEY -w]],
+            },
+          })
+        end,
+
+        -- Ollama (manual use)
+        ollama = function()
+          return require("codecompanion.adapters").extend("ollama", {})
+        end,
+      },
+      acp = {
+        codex = function()
+          return require("codecompanion.adapters").extend("codex", {
+            defaults = {
+              auth_method = "chatgpt",
+            },
+          })
+        end,
+      },
+    },
   },
   config = function(_, opts)
     require("codecompanion").setup(opts)
@@ -44,41 +79,4 @@ return {
     -- Expand 'cc' in command-line
     vim.cmd([[cab cc CodeCompanion]])
   end,
-  opts = {
-    -- Default strategies: GPT-5
-    strategies = {
-      chat = gpt5_strategy,
-      inline = gpt5_strategy,
-      agent = gpt5_strategy,
-    },
-    ignore_warnings = true,
-    adapters = {
-      http = {
-        -- OpenAI GPT-5
-        openai = function()
-          return require("codecompanion.adapters").extend("openai", {
-            env = {
-              api_key = [[cmd:security find-generic-password -a openai -s OPENAI_API_KEY -w]],
-            },
-            schema = {
-              model = { default = "gpt-5" },
-            },
-          })
-        end,
-
-        -- Ollama (manual use)
-        ollama = function()
-          return require("codecompanion.adapters").extend("ollama", {
-            schema = {
-              model = { default = ollama_strategy.adapter.model },
-            },
-          })
-        end,
-      },
-    },
-
-    opts = {
-      log_level = "DEBUG",
-    },
-  },
 }
