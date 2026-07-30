@@ -46,6 +46,8 @@ return {
     config = function(_, opts)
       require("conform").setup(opts)
 
+      local safe_write_state
+
       vim.api.nvim_create_user_command("FormatDisable", function(args)
         if args.bang then
           -- FormatDisable! will disable formatting just for this buffer
@@ -53,7 +55,6 @@ return {
         else
           vim.g.disable_autoformat = true
         end
-        vim.g.editorconfig = false
       end, {
         desc = "Disable autoformat-on-save",
         bang = true,
@@ -62,9 +63,65 @@ return {
       vim.api.nvim_create_user_command("FormatEnable", function()
         vim.b.disable_autoformat = false
         vim.g.disable_autoformat = false
-        vim.g.editorconfig = true
       end, {
         desc = "Re-enable autoformat-on-save",
+      })
+
+      vim.api.nvim_create_user_command("SafeWriteMode", function()
+        if safe_write_state then
+          vim.notify("Safe-write mode is already enabled")
+          return
+        end
+
+        safe_write_state = {
+          disable_autoformat = vim.g.disable_autoformat,
+          editorconfig = vim.g.editorconfig,
+        }
+
+        vim.g.disable_autoformat = true
+        vim.g.editorconfig = false
+
+        for _, bufnr in ipairs(vim.api.nvim_list_bufs()) do
+          if vim.api.nvim_buf_is_loaded(bufnr) then
+            vim.b[bufnr].editorconfig = false
+          end
+        end
+
+        -- EditorConfig may already have registered write-time whitespace
+        -- transformations for loaded buffers.
+        pcall(vim.api.nvim_clear_autocmds, {
+          event = "BufWritePre",
+          group = "nvim.editorconfig",
+        })
+
+        vim.notify("Safe-write mode enabled for this Neovim session")
+      end, {
+        desc = "Disable automatic write-time transformations",
+      })
+
+      vim.api.nvim_create_user_command("SafeWriteModeDisable", function()
+        if not safe_write_state then
+          vim.notify("Safe-write mode is not enabled")
+          return
+        end
+
+        vim.g.disable_autoformat = safe_write_state.disable_autoformat
+        vim.g.editorconfig = safe_write_state.editorconfig
+        safe_write_state = nil
+
+        for _, bufnr in ipairs(vim.api.nvim_list_bufs()) do
+          if vim.api.nvim_buf_is_loaded(bufnr) then
+            vim.b[bufnr].editorconfig = nil
+            local filename = vim.api.nvim_buf_get_name(bufnr)
+            if vim.g.editorconfig ~= false and filename ~= "" then
+              require("editorconfig").config(bufnr)
+            end
+          end
+        end
+
+        vim.notify("Safe-write mode disabled")
+      end, {
+        desc = "Restore automatic write-time transformations",
       })
 
       vim.api.nvim_set_keymap(
