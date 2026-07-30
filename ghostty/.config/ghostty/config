@@ -5,7 +5,6 @@ font-size = 16.0
 adjust-cell-width = 7%
 font-family = MesloLGS NF
 
-macos-icon = custom-style
 macos-icon-ghost-color = #FFFFFF
 macos-icon-screen-color = #0A0A0A
 mouse-hide-while-typing = true
