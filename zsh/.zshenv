@@ -15,3 +15,7 @@ path_add "$HOME/.local/bin"
 path_add "$HOME/.dotnet/tools"
 path_add "$HOME/.local/share/nvim/mason/bin"
 path_add "$HOME/Library/Android/sdk/platform-tools"
+# Rust
+path_add "$HOME/.cargo/bin"
+# Ruby
+path_add "$HOME/.gem/ruby/2.6.0/bin"
