@@ -27,6 +27,20 @@ NVM and the .NET SDK are optional unless you use their corresponding Neovim
 features. Zinit is installed by `make install`; it can also be installed
 separately with `make zinit`.
 
+The `webtorrent` command is installed through npm so Node remains managed by
+NVM rather than Homebrew. Its locked dependency graph keeps WebTorrent CLI 6
+on the npm-compatible `load-ip-set` release. Install Node 20 and activate it
+before installing the command-line package:
+
+```sh
+nvm install 20
+nvm use 20
+make node-dependencies
+```
+
+The wrapper installed by `make node-dependencies` always runs WebTorrent with
+NVM's Node 20, regardless of the Node version active in the current shell.
+
 Run the repository's non-destructive validation checks with:
 
 ```sh

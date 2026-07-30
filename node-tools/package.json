@@ -1,0 +1,11 @@
+{
+  "name": "dotfiles-node-tools",
+  "private": true,
+  "version": "1.0.0",
+  "dependencies": {
+    "webtorrent-cli": "6.0.0"
+  },
+  "overrides": {
+    "load-ip-set": "3.0.1"
+  }
+}
