@@ -151,7 +151,7 @@ bindkey '^[^?' backward-delete-word
 # -------------------------------
 # Aliases
 # -------------------------------
-alias ezsh="nvim ~/.zshrc && source ~/.zshrc"
+alias ezsh='nvim ~/.zshrc && exec zsh'
 alias vim="nvim"
 alias ls='ls -G'
 alias ll='ls -laG'
