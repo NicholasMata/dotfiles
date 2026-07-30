@@ -6,32 +6,40 @@ return {
     lazy = false,
     opts = {
       notify_on_error = false,
-      stop_after_first = true,
       format_on_save = function(bufnr)
         -- Disable with a global or buffer-local variable
         if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
           return
         end
-        -- Disable "format_on_save lsp_fallback" for languages that don't
+        -- Disable LSP formatting for languages that don't
         -- have a well standardized coding style. You can add additional
         -- languages here or re-enable it for the disabled ones.
         local disable_filetypes = { c = true, cpp = true }
         return {
           timeout_ms = 500,
-          lsp_fallback = not disable_filetypes[vim.bo[bufnr].filetype],
+          lsp_format = disable_filetypes[vim.bo[bufnr].filetype] and "never" or "fallback",
         }
       end,
       formatters_by_ft = {
         lua = { "stylua" },
-        typescriptreact = { "biome", "prettierd", "prettier", stop_after_first = true },
-        typescript = { "biome", "prettierd", "prettier", stop_after_first = true },
-        javascriptreact = { "biome", "prettierd", "prettier", stop_after_first = true },
-        javascript = { "biome", "prettierd", "prettier", stop_after_first = true },
+        typescriptreact = { "biome", "prettierd", stop_after_first = true },
+        typescript = { "biome", "prettierd", stop_after_first = true },
+        javascriptreact = { "biome", "prettierd", stop_after_first = true },
+        javascript = { "biome", "prettierd", stop_after_first = true },
         json = { "biome" },
-        xml = {
+        xml = { "xmllint" },
+      },
+      formatters = {
+        xmllint = {
           command = "xmllint",
           args = { "--format", "-" },
           stdin = true,
+        },
+        biome = {
+          require_cwd = true,
+        },
+        prettierd = {
+          require_cwd = true,
         },
       },
     },
@@ -72,7 +80,7 @@ return {
         { noremap = true, silent = true, desc = "[f]ormat [e]nable" }
       )
       -- vim.keymap.set("n", "<leader>fb", function()
-      -- 	require("conform").format({ async = true, lsp_fallback = true })
+      -- 	require("conform").format({ async = true, lsp_format = "fallback" })
       -- end, { noremap = true, silent = true, desc = "[f]ormat [b]uffer" })
     end,
   },

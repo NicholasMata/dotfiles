@@ -228,8 +228,14 @@ return {
         return name ~= "roslyn"
       end, vim.tbl_keys(servers or {}))
       vim.list_extend(ensure_installed, {
-        "stylua", -- Used to format Lua code
         "bash-language-server",
+        "biome",
+        "jsonlint",
+        "markdownlint-cli2",
+        "oxlint",
+        "prettierd",
+        "stylua",
+        "vale",
       })
       require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
