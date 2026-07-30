@@ -21,8 +21,8 @@ return {
         },
       },
 
-      -- `neodev` configures Lua LSP for your Neovim config, runtime and plugins
-      -- used for completion, annotations and signatures of Neovim apis
+      -- `lazydev` configures Lua LSP for your Neovim config, runtime and plugins
+      -- used for completion, annotations and signatures of Neovim APIs.
       {
         "folke/lazydev.nvim",
         ft = { "lua" },
@@ -169,6 +169,7 @@ return {
         bashls = {
           filetypes = { "sh", "zsh" },
         },
+        vtsls = {},
         roslyn = {
           cmd = {
             "roslyn-language-server",
@@ -237,15 +238,6 @@ return {
         "stylua",
         "vale",
       })
-      require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
-
-      -- mason-lspconfig v2: just auto-enable installed servers via vim.lsp.enable()
-      -- We keep installs driven by mason-tool-installer above.
-      require("mason-lspconfig").setup({
-        -- we don't ask it to install anything, just to enable what exists
-        automatic_enable = true,
-      })
-
       -- Global rounded-border tweak for LSP floating windows
       local orig_open_floating_preview = vim.lsp.util.open_floating_preview
       function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
@@ -270,6 +262,17 @@ return {
         root_markers = {
           { "Package.swift", "compile_commands.json" },
           ".git",
+        },
+      })
+
+      require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
+
+      -- mason-lspconfig v2: auto-enable installed servers after our configs are registered.
+      -- We keep installs driven by mason-tool-installer above.
+      require("mason-lspconfig").setup({
+        -- we don't ask it to install anything, just to enable what exists
+        automatic_enable = {
+          exclude = { "biome" },
         },
       })
     end,

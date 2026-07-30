@@ -1,4 +1,12 @@
 return {
+  {
+    "andymass/vim-matchup",
+    opts = {
+      treesitter = {
+        stopline = 500,
+      },
+    },
+  },
   { "nvim-treesitter/nvim-treesitter-context", event = "BufReadPost", config = true },
   {
     "nvim-treesitter/nvim-treesitter",
@@ -18,15 +26,17 @@ return {
         "c_sharp",
         "diff",
         "html",
+        "javascript",
+        "json",
         "lua",
         "luadoc",
         "markdown",
         "typescript",
+        "tsx",
         "vim",
         "vimdoc",
         "gitcommit",
         "git_rebase",
-        "tmux",
       })
 
       vim.api.nvim_create_autocmd("FileType", {
@@ -38,10 +48,14 @@ return {
           "gitcommit",
           "gitrebase",
           "html",
+          "javascript",
+          "javascriptreact",
+          "json",
           "lua",
           "markdown",
           "tmux",
           "typescript",
+          "typescriptreact",
           "vim",
         },
         callback = function()
@@ -50,7 +64,21 @@ return {
       })
 
       vim.api.nvim_create_autocmd("FileType", {
-        pattern = { "bash", "c", "cs", "html", "lua", "markdown", "tmux", "typescript", "vim" },
+        pattern = {
+          "bash",
+          "c",
+          "cs",
+          "html",
+          "javascript",
+          "javascriptreact",
+          "json",
+          "lua",
+          "markdown",
+          "tmux",
+          "typescript",
+          "typescriptreact",
+          "vim",
+        },
         callback = function()
           vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
         end,
