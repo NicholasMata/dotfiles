@@ -85,15 +85,25 @@ why it is so large.
 
 ### zsh-autosuggestions
 
-[This](https://github.com/zsh-users/zsh-autosuggestions) suggests terminal
-commands based on previously entered commands.
+[This](https://github.com/zsh-users/zsh-autosuggestions) displays inline
+terminal command suggestions based on command history.
 
 ### zsh-completions
 
-[This](https://github.com/zsh-users/zsh-completions) provides completion
-suggestions below the prompt, in addition to a history menu.
+[This](https://github.com/zsh-users/zsh-completions) adds completion
+definitions for commands that are not covered by Zsh itself.
+
+### fzf-tab
+
+[fzf-tab](https://github.com/Aloxaf/fzf-tab) displays and filters completion
+candidates when using tab completion.
+
+### zsh-fzf-history-search
+
+[This](https://github.com/joshskidmore/zsh-fzf-history-search) provides a
+searchable menu for command history.
 
 ### zsh-syntax-highlighting
 
-[This](https://github.com/zsh-users/zsh-syntax-highlighting) adds syntax
-highlighting for terminal commands.
+[This](https://github.com/zsh-users/zsh-syntax-highlighting) colors the command
+line according to Zsh syntax.
