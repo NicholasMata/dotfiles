@@ -8,8 +8,23 @@ return {
   },
 
   -- "gc" to comment visual regions/lines
-  { "numToStr/Comment.nvim", opts = {} },
-  { "JoosepAlviste/nvim-ts-context-commentstring", event = "BufReadPost" },
+  {
+    "numToStr/Comment.nvim",
+    event = "VeryLazy",
+    dependencies = { "JoosepAlviste/nvim-ts-context-commentstring" },
+    opts = function()
+      return {
+        pre_hook = require("ts_context_commentstring.integrations.comment_nvim").create_pre_hook(),
+      }
+    end,
+  },
+  {
+    "JoosepAlviste/nvim-ts-context-commentstring",
+    event = "BufReadPost",
+    opts = {
+      enable_autocmd = false,
+    },
+  },
   -- documentation comments
   {
     "kkoomen/vim-doge",
