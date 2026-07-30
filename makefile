@@ -9,6 +9,9 @@ NODE_TOOLS_SOURCE := $(CURDIR)/node-tools
 NODE_TOOLS_HOME := $(HOME)/.local/share/dotfiles-node-tools
 USER_BIN := $(HOME)/.local/bin
 ZINIT_HOME := $(if $(XDG_DATA_HOME),$(XDG_DATA_HOME),$(HOME)/.local/share)/zinit/zinit.git
+ZINIT_REPOSITORY := https://github.com/zdharma-continuum/zinit.git
+ZINIT_VERSION := v3.15.0
+ZINIT_REVISION := 429ab136312dfce68ad7d87a0ecb08c5063e7287
 
 .PHONY: all install dependencies node-dependencies zinit stow delete check
 
@@ -32,7 +35,15 @@ node-dependencies:
 	install -m 0755 "$(NODE_TOOLS_SOURCE)/webtorrent" "$(USER_BIN)/webtorrent"
 
 zinit:
-	@test -d "$(ZINIT_HOME)/.git" || { mkdir -p "$(dir $(ZINIT_HOME))"; git clone https://github.com/zdharma-continuum/zinit.git "$(ZINIT_HOME)"; }
+	@if test ! -d "$(ZINIT_HOME)/.git"; then \
+		mkdir -p "$(dir $(ZINIT_HOME))"; \
+		git clone --branch "$(ZINIT_VERSION)" --depth 1 "$(ZINIT_REPOSITORY)" "$(ZINIT_HOME)"; \
+	elif test "$$(git -C "$(ZINIT_HOME)" rev-parse HEAD)" != "$(ZINIT_REVISION)"; then \
+		test -z "$$(git -C "$(ZINIT_HOME)" status --porcelain)" || { echo "Zinit has local changes; refusing to replace them."; exit 1; }; \
+		git -C "$(ZINIT_HOME)" fetch --depth 1 origin tag "$(ZINIT_VERSION)"; \
+		git -C "$(ZINIT_HOME)" checkout --detach "$(ZINIT_REVISION)"; \
+	fi
+	@test "$$(git -C "$(ZINIT_HOME)" rev-parse HEAD)" = "$(ZINIT_REVISION)" || { echo "Zinit $(ZINIT_VERSION) did not resolve to $(ZINIT_REVISION)."; exit 1; }
 
 stow:
 	stow --verbose --target="$(HOME)" --restow $(STOW_PACKAGES)

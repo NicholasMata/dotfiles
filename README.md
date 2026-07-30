@@ -26,7 +26,9 @@ To install only the Homebrew dependencies and applications, run
 
 NVM and the .NET SDK are optional unless you use their corresponding Neovim
 features. Zinit is installed by `make install`; it can also be installed
-separately with `make zinit`.
+separately with `make zinit`. Its release tag and commit are pinned in the
+Makefile so a new machine receives the same version. To upgrade Zinit, update
+both `ZINIT_VERSION` and `ZINIT_REVISION`, then run `make zinit`.
 
 The `webtorrent` command is installed through npm so Node remains managed by
 NVM rather than Homebrew. Its locked dependency graph keeps WebTorrent CLI 6
