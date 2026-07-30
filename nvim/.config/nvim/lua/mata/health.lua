@@ -1,52 +1,65 @@
---[[
---
--- This file is not required for your own configuration,
--- but helps people determine if their system is setup correctly.
---
---]]
+local minimum_neovim_version = { 0, 11, 0 }
 
-local check_version = function()
-  local verstr = string.format("%s.%s.%s", vim.version().major, vim.version().minor, vim.version().patch)
-  if not vim.version.cmp then
-    vim.health.error(string.format("Neovim out of date: '%s'. Upgrade to latest stable or nightly", verstr))
-    return
-  end
+local function version_string(version)
+  return string.format("%d.%d.%d", version.major, version.minor, version.patch)
+end
 
-  if vim.version.cmp(vim.version(), { 0, 9, 4 }) >= 0 then
-    vim.health.ok(string.format("Neovim version is: '%s'", verstr))
+local function check_neovim_version()
+  local current = vim.version()
+  local current_string = version_string(current)
+  local minimum_string = version_string({
+    major = minimum_neovim_version[1],
+    minor = minimum_neovim_version[2],
+    patch = minimum_neovim_version[3],
+  })
+
+  if vim.version.ge(current, minimum_neovim_version) then
+    vim.health.ok("Neovim " .. current_string)
   else
-    vim.health.error(string.format("Neovim out of date: '%s'. Upgrade to latest stable or nightly", verstr))
+    vim.health.error(
+      string.format(
+        "Neovim %s is unsupported; version %s or newer is required for the native LSP configuration",
+        current_string,
+        minimum_string
+      )
+    )
   end
 end
 
-local check_external_reqs = function()
-  -- Basic utils: `git`, `make`, `unzip`
-  for _, exe in ipairs({ "git", "make", "unzip", "rg" }) do
-    local is_executable = vim.fn.executable(exe) == 1
-    if is_executable then
-      vim.health.ok(string.format("Found executable: '%s'", exe))
+local function check_executables(title, executables, report_missing)
+  vim.health.start(title)
+
+  for _, executable in ipairs(executables) do
+    if vim.fn.executable(executable) == 1 then
+      vim.health.ok(executable)
     else
-      vim.health.warn(string.format("Could not find executable: '%s'", exe))
+      report_missing(executable .. " was not found in PATH")
     end
   end
-
-  return true
 end
 
 return {
   check = function()
-    vim.health.start("kickstart.nvim")
+    vim.health.start("Dotfiles Neovim configuration")
+    check_neovim_version()
 
-    vim.health.info([[NOTE: Not every warning is a 'must-fix' in `:checkhealth`
+    check_executables("Core command-line tools", {
+      "git",
+      "make",
+      "unzip",
+      "rg",
+      "fd",
+    }, vim.health.error)
 
-  Fix only warnings for plugins and languages you intend to use.
-    Mason will give warnings for languages that are not installed.
-    You do not need to install, unless you want to use those languages!]])
+    check_executables("Feature-specific command-line tools", {
+      "codex-acp",
+      "lazygit",
+      "markdownlint-cli2",
+      "stylua",
+      "taplo",
+      "tree-sitter",
+    }, vim.health.warn)
 
-    local uv = vim.uv or vim.loop
-    vim.health.info("System Information: " .. vim.inspect(uv.os_uname()))
-
-    check_version()
-    check_external_reqs()
+    vim.health.info("Install managed command-line tools with `make dependencies`")
   end,
 }
