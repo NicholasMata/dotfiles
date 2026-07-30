@@ -169,6 +169,7 @@ return {
         bashls = {
           filetypes = { "sh", "zsh" },
         },
+        taplo = {},
         vtsls = {},
         roslyn = {
           cmd = {
@@ -225,8 +226,12 @@ return {
 
       -- You can add other tools here that you want Mason to install
       -- for you, so that they are available from within Neovim.
+      local externally_managed_servers = {
+        roslyn = true,
+        taplo = true,
+      }
       local ensure_installed = vim.tbl_filter(function(name)
-        return name ~= "roslyn"
+        return not externally_managed_servers[name]
       end, vim.tbl_keys(servers or {}))
       vim.list_extend(ensure_installed, {
         "bash-language-server",
@@ -253,6 +258,9 @@ return {
         -- This **replaces** require('lspconfig')[server].setup{...}
         vim.lsp.config(server_name, server)
       end
+
+      -- Taplo is installed by Homebrew because Make also uses it to validate TOML.
+      vim.lsp.enable("taplo")
 
       -- Optional: custom SourceKit config without require('lspconfig')
       -- (Only needed if you want to override the defaults from nvim-lspconfig.)

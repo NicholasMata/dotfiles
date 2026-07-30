@@ -3,6 +3,7 @@ SHELL := /bin/sh
 BREW := $(shell command -v brew 2>/dev/null)
 STYLUA := $(shell command -v stylua 2>/dev/null)
 BREWFILE := $(CURDIR)/Brewfile
+STYLUA_CONFIG := $(CURDIR)/nvim/.config/nvim/stylua.toml
 STOW_PACKAGES := aerospace ghostty herdr nvim zsh
 NODE_TOOLS_SOURCE := $(CURDIR)/node-tools
 NODE_TOOLS_HOME := $(HOME)/.local/share/dotfiles-node-tools
@@ -47,8 +48,12 @@ ifndef STYLUA
 	$(error StyLua is required for formatting checks. Run `make dependencies` to install it)
 endif
 	@for package in $(STOW_PACKAGES); do test -d "$$package" || { echo "Missing Stow package: $$package"; exit 1; }; done
-	$(BREW) bundle list --file="$(BREWFILE)" >/dev/null
+	@for command in aerospace git ghostty nvim stow stylua taplo zsh; do command -v "$$command" >/dev/null || { echo "Missing required command: $$command"; exit 1; }; done
+	$(BREW) bundle check --no-upgrade --file="$(BREWFILE)"
 	zsh -n zsh/.zshenv zsh/.zshrc
-	$(STYLUA) --check nvim/.config/nvim
+	$(STYLUA) --config-path="$(STYLUA_CONFIG)" --check nvim/.config/nvim scripts
+	taplo check aerospace/.config/aerospace/aerospace.toml aerospace/.config/aerospace/aerospace.vim.toml herdr/.config/herdr/config.toml
+	ghostty +validate-config --config-file="$(CURDIR)/ghostty/.config/ghostty/config"
 	nvim --headless -u NONE "+lua for _, path in ipairs(vim.fn.glob('nvim/.config/nvim/**/*.lua', false, true)) do assert(loadfile(path)) end" +qa
+	nvim -i NONE --headless "+lua dofile('scripts/check-nvim.lua')" +qa
 	git diff --check

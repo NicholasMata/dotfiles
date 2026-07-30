@@ -27,6 +27,7 @@ return {
         javascriptreact = { "biome", "prettierd", stop_after_first = true },
         javascript = { "biome", "prettierd", stop_after_first = true },
         json = { "biome" },
+        toml = { "taplo" },
         xml = { "xmllint" },
       },
       formatters = {

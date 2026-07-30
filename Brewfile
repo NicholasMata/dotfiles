@@ -3,6 +3,7 @@ brew "stow"
 
 # Required to validate this repository.
 brew "stylua"
+brew "taplo"
 
 # Commands referenced directly by the zsh configuration.
 brew "fzf"
