@@ -235,7 +235,6 @@ return {
         "markdownlint-cli2",
         "oxlint",
         "prettierd",
-        "stylua",
         "vale",
       })
       -- Global rounded-border tweak for LSP floating windows

@@ -44,7 +44,7 @@ ifndef BREW
 	$(error Homebrew is required to validate the Brewfile)
 endif
 ifndef STYLUA
-	$(error StyLua is required for formatting checks. Open Neovim once so Mason can install it)
+	$(error StyLua is required for formatting checks. Run `make dependencies` to install it)
 endif
 	@for package in $(STOW_PACKAGES); do test -d "$$package" || { echo "Missing Stow package: $$package"; exit 1; }; done
 	$(BREW) bundle list --file="$(BREWFILE)" >/dev/null

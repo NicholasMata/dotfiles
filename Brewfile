@@ -1,6 +1,9 @@
 # Required to apply this repository.
 brew "stow"
 
+# Required to validate this repository.
+brew "stylua"
+
 # Commands referenced directly by the zsh configuration.
 brew "fzf"
 brew "ripgrep"
