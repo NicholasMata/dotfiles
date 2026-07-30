@@ -9,8 +9,12 @@ fi
 # -------------------------------
 # Homebrew Environment Setup
 # -------------------------------
-if [[ -f "/opt/homebrew/bin/brew" ]]; then
+if (( $+commands[brew] )); then
+  eval "$(brew shellenv)"
+elif [[ -x "/opt/homebrew/bin/brew" ]]; then
   eval "$(/opt/homebrew/bin/brew shellenv)"
+elif [[ -x "/usr/local/bin/brew" ]]; then
+  eval "$(/usr/local/bin/brew shellenv)"
 fi
 
 # -------------------------------
@@ -18,8 +22,10 @@ fi
 # -------------------------------
 ZVM_INIT_MODE=sourcing
 ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
-[ ! -d $ZINIT_HOME ] && mkdir -p "$(dirname $ZINIT_HOME)"
-[ ! -d $ZINIT_HOME/.git ] && git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
+if [[ ! -r "${ZINIT_HOME}/zinit.zsh" ]]; then
+  print -u2 "Zinit is not installed. Run 'make zinit' from the dotfiles repository."
+  return 1
+fi
 source "${ZINIT_HOME}/zinit.zsh"
 
 # -------------------------------
@@ -55,7 +61,9 @@ zinit light Aloxaf/fzf-tab
 
 zinit cdreplay -q
 
-source $(brew --prefix)/share/zsh-history-substring-search/zsh-history-substring-search.zsh
+history_search="${HOMEBREW_PREFIX}/share/zsh-history-substring-search/zsh-history-substring-search.zsh"
+[[ -r "$history_search" ]] && source "$history_search"
+unset history_search
 
 zstyle ':completion:*' use-cache on
 zstyle ':completion:*' cache-path ~/.zsh/cache
@@ -117,7 +125,7 @@ export FZF_DEFAULT_OPTS='--bind=alt-n:preview-down --bind=alt-p:preview-up'
 export FZF_DEFAULT_COMMAND='rg --files --hidden --smart-case --glob "!.git/*"'
 if [[ -f ~/.fzf.zsh ]]; then
   source ~/.fzf.zsh
-else
+elif (( $+commands[fzf] )); then
   eval "$(fzf --zsh)"
 fi
 
@@ -156,7 +164,8 @@ export NVM_DIR="$HOME/.nvm"
 [[ -s "$NVM_DIR/nvm.sh" ]] && zsh-defer source "$NVM_DIR/nvm.sh"
 [[ -s "$NVM_DIR/bash_completion" ]] && zsh-defer source "$NVM_DIR/bash_completion"
 
-
-zsh-defer eval "$(zoxide init zsh --cmd cd)"
+if (( $+commands[zoxide] )); then
+  zsh-defer eval "$(zoxide init zsh --cmd cd)"
+fi
 
 #zprof # Enable for profiling

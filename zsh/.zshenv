@@ -3,8 +3,8 @@ path_add() {
   [ -d "$1" ] && [[ ":$PATH:" != *":$1:"* ]] && PATH="$1:$PATH"
 }
 
-export EDITOR="/opt/homebrew/bin/nvim"
-export VISUAL="/opt/homebrew/bin/nvim"
+export EDITOR="nvim"
+export VISUAL="nvim"
 
 export CLICOLOR=1
 
