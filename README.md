@@ -70,11 +70,24 @@ macOS Spaces, so operating-system updates could break it. Aerospace instead
 uses virtual workspaces by hiding and showing windows. This loses some built-in
 macOS functionality, but I am comfortable with that compromise.
 
+### [Herdr](https://herdr.dev/)
+
+I use Herdr as a terminal-based agent multiplexer. These dotfiles configure its
+Rosé Pine theme, workspace and pane key bindings, and navigation between Herdr
+and Neovim.
+
 ### [Neovim](https://neovim.io/)
 
 Neovim is my main editor and my favorite after trying many editors over the
 past two decades. I previously used LunarVim, but a custom configuration gives
 me better performance and more control over personalization.
+
+### Additional macOS applications
+
+The Homebrew bundle also installs
+[Mouseless](https://mouseless.click/) for keyboard-driven pointer control and
+[Nightfall](https://github.com/r-thomson/Nightfall/) for toggling macOS dark
+mode. They do not have configuration tracked in this repository.
 
 ### Powerlevel10k
 
