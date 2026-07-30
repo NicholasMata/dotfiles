@@ -73,7 +73,7 @@ zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 zstyle ':completion:*' rehash true
 zstyle ':completion:*' menu no
 zstyle ':completion:*' accept-exact '*(N)'
-zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls -A --color $realpath'
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'CLICOLOR_FORCE=1 ls -AG "$realpath"'
 
 # -------------------------------
 # Prompt Configuration
