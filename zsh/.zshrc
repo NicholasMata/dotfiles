@@ -151,7 +151,6 @@ bindkey '^[^?' backward-delete-word
 # -------------------------------
 # Aliases
 # -------------------------------
-alias ekitty="nvim ~/.config/kitty/kitty.conf"
 alias ezsh="nvim ~/.zshrc && source ~/.zshrc"
 alias vim="nvim"
 alias ls='ls -G'
