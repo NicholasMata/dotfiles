@@ -64,7 +64,7 @@ endif
 	zsh -n zsh/.zshenv zsh/.zshrc
 	markdownlint-cli2 README.md
 	$(STYLUA) --config-path="$(STYLUA_CONFIG)" --check nvim/.config/nvim scripts
-	taplo check aerospace/.config/aerospace/aerospace.toml aerospace/.config/aerospace/aerospace.vim.toml herdr/.config/herdr/config.toml
+	taplo check aerospace/.config/aerospace/aerospace.toml herdr/.config/herdr/config.toml
 	ghostty +validate-config --config-file="$(CURDIR)/ghostty/.config/ghostty/config"
 	nvim --headless -u NONE "+lua for _, path in ipairs(vim.fn.glob('nvim/.config/nvim/**/*.lua', false, true)) do assert(loadfile(path)) end" +qa
 	nvim -i NONE --headless "+lua dofile('scripts/check-nvim.lua')" +qa
