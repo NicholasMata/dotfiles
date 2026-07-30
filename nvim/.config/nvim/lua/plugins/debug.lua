@@ -1,3 +1,8 @@
+local dap_cs_path = vim.fn.expand("~/Developer/nvim-dap-cs")
+if vim.fn.isdirectory(dap_cs_path) == 0 then
+  dap_cs_path = nil
+end
+
 return {
   {
     "mfussenegger/nvim-dap",
@@ -121,7 +126,7 @@ return {
   {
     "nicholasmata/nvim-dap-cs",
     ft = "cs",
-    dir = "~/Developer/nvim-dap-cs",
+    dir = dap_cs_path,
     config = true,
     dependencies = {
       "mfussenegger/nvim-dap",
