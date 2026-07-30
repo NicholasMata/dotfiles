@@ -2,6 +2,7 @@
 brew "stow"
 
 # Required to validate this repository.
+brew "markdownlint-cli2"
 brew "stylua"
 brew "taplo"
 

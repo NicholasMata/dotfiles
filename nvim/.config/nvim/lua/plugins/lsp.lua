@@ -237,7 +237,6 @@ return {
         "bash-language-server",
         "biome",
         "jsonlint",
-        "markdownlint-cli2",
         "oxlint",
         "prettierd",
         "vale",
