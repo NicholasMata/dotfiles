@@ -11,8 +11,8 @@ source "$NVM_DIR/nvm.sh"
 
 webtorrent_cli="$HOME/.local/share/dotfiles-node-tools/node_modules/.bin/webtorrent"
 if [[ ! -x "$webtorrent_cli" ]]; then
-  print -u2 "webtorrent-cli is not installed. Run 'nvm use 20 && make node-dependencies' from the dotfiles repository."
+  print -u2 "webtorrent-cli is not installed. Run 'nvm use 24 && make node-dependencies' from the dotfiles repository."
   exit 1
 fi
 
-nvm exec --silent 20 "$webtorrent_cli" "$@"
+nvm exec --silent 24 "$webtorrent_cli" "$@"

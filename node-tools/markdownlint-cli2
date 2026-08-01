@@ -1,0 +1,18 @@
+#!/bin/zsh
+
+export NVM_DIR="${NVM_DIR:-$HOME/.nvm}"
+
+if [[ ! -r "$NVM_DIR/nvm.sh" ]]; then
+  print -u2 "NVM is not installed at $NVM_DIR"
+  exit 1
+fi
+
+source "$NVM_DIR/nvm.sh"
+
+markdownlint_cli="$HOME/.local/share/dotfiles-node-tools/node_modules/.bin/markdownlint-cli2"
+if [[ ! -x "$markdownlint_cli" ]]; then
+  print -u2 "markdownlint-cli2 is not installed. Run 'nvm use 24 && make node-dependencies' from the dotfiles repository."
+  exit 1
+fi
+
+nvm exec --silent 24 "$markdownlint_cli" "$@"

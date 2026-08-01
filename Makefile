@@ -7,7 +7,9 @@ STYLUA_CONFIG := $(CURDIR)/nvim/.config/nvim/stylua.toml
 STOW_PACKAGES := aerospace ghostty herdr nvim zsh
 NODE_TOOLS_SOURCE := $(CURDIR)/node-tools
 NODE_TOOLS_HOME := $(HOME)/.local/share/dotfiles-node-tools
+NODE_VERSION := 24
 USER_BIN := $(HOME)/.local/bin
+MARKDOWNLINT := $(USER_BIN)/markdownlint-cli2
 ZINIT_HOME := $(if $(XDG_DATA_HOME),$(XDG_DATA_HOME),$(HOME)/.local/share)/zinit/zinit.git
 ZINIT_REPOSITORY := https://github.com/zdharma-continuum/zinit.git
 ZINIT_VERSION := v3.15.0
@@ -26,12 +28,14 @@ endif
 	$(BREW) bundle --file="$(BREWFILE)"
 
 node-dependencies:
-	@test -n "$(NVM_BIN)" && test -x "$(NVM_BIN)/npm" || { echo "An active NVM-managed Node version is required. Run 'nvm use 20', then try again."; exit 1; }
-	@test "$$("$(NVM_BIN)/node" --print 'process.versions.node.split(".")[0]')" = "20" || { echo "Node 20 is required. Run 'nvm use 20', then try again."; exit 1; }
+	@test -n "$(NVM_BIN)" && test -x "$(NVM_BIN)/npm" || { echo "An active NVM-managed Node version is required. Run 'nvm use $(NODE_VERSION)', then try again."; exit 1; }
+	@test "$$("$(NVM_BIN)/node" --print 'process.versions.node.split(".")[0]')" = "$(NODE_VERSION)" || { echo "Node $(NODE_VERSION) is required. Run 'nvm use $(NODE_VERSION)', then try again."; exit 1; }
 	mkdir -p "$(NODE_TOOLS_HOME)"
 	install -m 0644 "$(NODE_TOOLS_SOURCE)/package.json" "$(NODE_TOOLS_SOURCE)/package-lock.json" "$(NODE_TOOLS_HOME)"
-	"$(NVM_BIN)/npm" ci --prefix="$(NODE_TOOLS_HOME)"
+	"$(NVM_BIN)/npm" ci --ignore-scripts --prefix="$(NODE_TOOLS_HOME)"
+	"$(NVM_BIN)/npm" rebuild --prefix="$(NODE_TOOLS_HOME)" node-datachannel bufferutil utf-8-validate utp-native
 	mkdir -p "$(USER_BIN)"
+	install -m 0755 "$(NODE_TOOLS_SOURCE)/markdownlint-cli2" "$(USER_BIN)/markdownlint-cli2"
 	install -m 0755 "$(NODE_TOOLS_SOURCE)/webtorrent" "$(USER_BIN)/webtorrent"
 
 zinit:
@@ -59,10 +63,11 @@ ifndef STYLUA
 	$(error StyLua is required for formatting checks. Run `make dependencies` to install it)
 endif
 	@for package in $(STOW_PACKAGES); do test -d "$$package" || { echo "Missing Stow package: $$package"; exit 1; }; done
-	@for command in aerospace git ghostty markdownlint-cli2 nvim stow stylua taplo zsh; do command -v "$$command" >/dev/null || { echo "Missing required command: $$command"; exit 1; }; done
+	@test -x "$(MARKDOWNLINT)" || { echo "markdownlint-cli2 is required. Run 'nvm use $(NODE_VERSION) && make node-dependencies' to install it."; exit 1; }
+	@for command in aerospace git ghostty nvim stow stylua taplo zsh; do command -v "$$command" >/dev/null || { echo "Missing required command: $$command"; exit 1; }; done
 	$(BREW) bundle check --no-upgrade --file="$(BREWFILE)"
-	zsh -n zsh/.zshenv zsh/.zshrc
-	markdownlint-cli2 README.md
+	zsh -n zsh/.zshenv zsh/.zshrc node-tools/markdownlint-cli2 node-tools/webtorrent
+	"$(MARKDOWNLINT)" README.md
 	$(STYLUA) --config-path="$(STYLUA_CONFIG)" --check nvim/.config/nvim
 	taplo check aerospace/.config/aerospace/aerospace.toml herdr/.config/herdr/config.toml
 	ghostty +validate-config --config-file="$(CURDIR)/ghostty/.config/ghostty/config"

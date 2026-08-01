@@ -30,19 +30,21 @@ separately with `make zinit`. Its release tag and commit are pinned in the
 Makefile so a new machine receives the same version. To upgrade Zinit, update
 both `ZINIT_VERSION` and `ZINIT_REVISION`, then run `make zinit`.
 
-The `webtorrent` command is installed through npm so Node remains managed by
-NVM rather than Homebrew. Its locked dependency graph keeps WebTorrent CLI 6
-on the npm-compatible `load-ip-set` release. Install Node 20 and activate it
-before installing the command-line package:
+The Node-powered `webtorrent` and `markdownlint-cli2` commands are installed
+through npm so Node remains managed by NVM rather than Homebrew. The locked
+dependency graph keeps WebTorrent CLI 6 while overriding vulnerable transitive
+packages where compatible. Installation skips package lifecycle scripts, then
+rebuilds WebTorrent's required native modules. Install Node 24 LTS and activate
+it before installing the command-line packages:
 
 ```sh
-nvm install 20
-nvm use 20
+nvm install 24
+nvm use 24
 make node-dependencies
 ```
 
-The wrapper installed by `make node-dependencies` always runs WebTorrent with
-NVM's Node 20, regardless of the Node version active in the current shell.
+The wrappers installed by `make node-dependencies` always use NVM's Node 24,
+regardless of the Node version active in the current shell.
 
 Run the repository's non-destructive validation checks with:
 
