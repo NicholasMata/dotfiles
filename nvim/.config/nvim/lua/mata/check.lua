@@ -53,6 +53,12 @@ function M.run()
   failures = {}
 
   plugin_opts("overseer.nvim")
+  for _, template in ipairs({ "dotnet", "gradle", "swift" }) do
+    local template_files = vim.api.nvim_get_runtime_file("lua/overseer/template/" .. template .. ".lua", true)
+    if #template_files == 0 then
+      fail("missing Overseer template: " .. template)
+    end
+  end
 
   local neotest = plugin_opts("neotest")
   expect_keys(neotest.adapters, { "dotnet", "go", "jest", "kotlin", "vitest" }, "test adapter")
