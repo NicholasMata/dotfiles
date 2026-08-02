@@ -52,6 +52,8 @@ end
 function M.run()
   failures = {}
 
+  plugin_opts("overseer.nvim")
+
   local lsp = plugin_opts("nvim-lspconfig")
   expect_keys(lsp.servers, {
     "bashls",

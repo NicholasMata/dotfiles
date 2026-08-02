@@ -28,7 +28,7 @@ return {
         { "d", group = "[d]ebug" },
         { "t", group = "[t]elescope" },
         { "g", group = "[g]it" },
-        { "o", group = "[o]s" },
+        { "o", group = "[o]pen / run" },
       }, { mode = "n", prefix = "<leader>" })
     end,
   },
