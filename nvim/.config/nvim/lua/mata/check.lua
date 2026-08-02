@@ -54,6 +54,9 @@ function M.run()
 
   plugin_opts("overseer.nvim")
 
+  local neotest = plugin_opts("neotest")
+  expect_keys(neotest.adapters, { "dotnet", "go", "jest", "vitest" }, "test adapter")
+
   local lsp = plugin_opts("nvim-lspconfig")
   expect_keys(lsp.servers, {
     "bashls",

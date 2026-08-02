@@ -157,6 +157,21 @@ return {
     end,
   },
   {
+    "nvim-neotest/neotest",
+    dependencies = {
+      "nvim-neotest/neotest-jest",
+      "marilari88/neotest-vitest",
+    },
+    opts = function(_, opts)
+      opts.adapters.jest = function()
+        return require("neotest-jest")({})
+      end
+      opts.adapters.vitest = function()
+        return require("neotest-vitest")({})
+      end
+    end,
+  },
+  {
     "windwp/nvim-ts-autotag",
     event = { "BufReadPre", "BufNewFile" },
     opts = {},

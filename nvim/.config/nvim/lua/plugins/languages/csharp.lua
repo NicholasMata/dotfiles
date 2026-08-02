@@ -46,6 +46,17 @@ return {
     end,
   },
   {
+    "nvim-neotest/neotest",
+    dependencies = {
+      "Issafalcon/neotest-dotnet",
+    },
+    opts = function(_, opts)
+      opts.adapters.dotnet = function()
+        return require("neotest-dotnet")({})
+      end
+    end,
+  },
+  {
     "mfussenegger/nvim-dap",
     opts = function(_, opts)
       table.insert(opts.ensure_installed, "coreclr")
