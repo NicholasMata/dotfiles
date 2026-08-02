@@ -23,6 +23,17 @@ return {
     end,
   },
   {
+    "nvim-neotest/neotest",
+    dependencies = {
+      "codymikol/neotest-kotlin.nvim",
+    },
+    opts = function(_, opts)
+      opts.adapters.kotlin = function()
+        return require("neotest-kotlin")
+      end
+    end,
+  },
+  {
     "mfussenegger/nvim-dap",
     opts = function(_, opts)
       table.insert(opts.ensure_installed, "kotlin")

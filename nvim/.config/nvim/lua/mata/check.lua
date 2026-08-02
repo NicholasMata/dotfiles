@@ -55,7 +55,7 @@ function M.run()
   plugin_opts("overseer.nvim")
 
   local neotest = plugin_opts("neotest")
-  expect_keys(neotest.adapters, { "dotnet", "go", "jest", "vitest" }, "test adapter")
+  expect_keys(neotest.adapters, { "dotnet", "go", "jest", "kotlin", "vitest" }, "test adapter")
 
   local which_key = plugin_opts("which-key.nvim")
   local which_key_groups = {}
