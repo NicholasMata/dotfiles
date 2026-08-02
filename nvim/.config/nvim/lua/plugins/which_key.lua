@@ -22,14 +22,14 @@ return {
 
       -- Declare leader groups (no rhs)
       wk.add({
-        { "m", group = "[m]arkdown" },
-        { "mp", group = "[p]review" },
-        { "l", group = "[l]sp" },
-        { "d", group = "[d]ebug" },
-        { "t", group = "[t]elescope" },
-        { "g", group = "[g]it" },
-        { "o", group = "[o]pen / run" },
-      }, { mode = "n", prefix = "<leader>" })
+        { "<leader>m", group = "[m]arkdown" },
+        { "<leader>mp", group = "[p]review" },
+        { "<leader>l", group = "[l]sp" },
+        { "<leader>d", group = "[d]ebug" },
+        { "<leader>t", group = "[t]ests" },
+        { "<leader>g", group = "[g]it" },
+        { "<leader>o", group = "[o]pen / run" },
+      }, { mode = "n" })
     end,
   },
 }
