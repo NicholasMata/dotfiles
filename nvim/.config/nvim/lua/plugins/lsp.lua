@@ -21,21 +21,18 @@ return {
         },
       },
 
-      -- `lazydev` configures Lua LSP for your Neovim config, runtime and plugins
-      -- used for completion, annotations and signatures of Neovim APIs.
-      {
-        "folke/lazydev.nvim",
-        ft = { "lua" },
-        opts = { library = { "lazy.nvim", { path = "snacks.nvim", words = { "Snacks" } } } },
-      },
       { "Issafalcon/lsp-overloads.nvim", opts = { focusable = true } },
-      {
-        "seblyng/roslyn.nvim",
-        ft = "cs",
-        opts = {},
+    },
+    opts = {
+      servers = {},
+      externally_managed_servers = {},
+      ensure_installed = { "vale" },
+      manually_enabled_servers = {},
+      automatic_enable_exclusions = {
+        "biome",
       },
     },
-    config = function()
+    config = function(_, opts)
       vim.api.nvim_create_autocmd("LspAttach", {
         group = vim.api.nvim_create_augroup("mata-lsp-attach", { clear = true }),
         callback = function(event)
@@ -152,70 +149,6 @@ return {
       --  - capabilities (table): Override fields in capabilities. Can be used to disable certain LSP features.
       --  - settings (table): Override the default settings passed when initializing the server.
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
-      local servers = {
-        -- clangd = {},
-        -- gopls = {},
-        -- pyright = {},
-        -- rust_analyzer = {},
-        -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
-        --
-        -- Some languages (like typescript) have entire language plugins that can be useful:
-        --    https://github.com/pmizio/typescript-tools.nvim
-        --
-        -- But for many setups, the LSP (`tsserver`) will work just fine
-        -- tsserver = {},
-        --
-        --
-        bashls = {
-          filetypes = { "sh", "zsh" },
-        },
-        taplo = {},
-        vtsls = {},
-        roslyn = {
-          cmd = {
-            "roslyn-language-server",
-            "--logLevel=Information",
-            "--extensionLogDirectory=" .. vim.fs.dirname(vim.lsp.log.get_filename()),
-            "--stdio",
-          },
-          settings = {
-            ["csharp|inlay_hints"] = {
-              csharp_enable_inlay_hints_for_implicit_object_creation = true,
-              csharp_enable_inlay_hints_for_implicit_variable_types = true,
-              csharp_enable_inlay_hints_for_lambda_parameter_types = true,
-              csharp_enable_inlay_hints_for_types = true,
-            },
-            ["csharp|code_lens"] = {
-              dotnet_enable_references_code_lens = true,
-            },
-          },
-        },
-        lua_ls = {
-          -- cmd = {...},
-          -- filetypes = { ...},
-          -- capabilities = {},
-          settings = {
-            Lua = {
-              diagnostics = {
-                globals = { "vim" },
-              },
-              workspace = {
-                library = {
-                  vim.fn.stdpath("config") .. "/lua",
-                  vim.api.nvim_get_runtime_file("", true),
-                  vim.env.VIMRUNTIME,
-                },
-              },
-              completion = {
-                callSnippet = "Replace",
-              },
-              -- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
-              -- diagnostics = { disable = { 'missing-fields' } },
-            },
-          },
-        },
-      }
-
       -- Ensure the servers and tools above are installed
       --  To check the current status of installed tools and/or manually install
       --  other tools, you can run
@@ -226,21 +159,10 @@ return {
 
       -- You can add other tools here that you want Mason to install
       -- for you, so that they are available from within Neovim.
-      local externally_managed_servers = {
-        roslyn = true,
-        taplo = true,
-      }
       local ensure_installed = vim.tbl_filter(function(name)
-        return not externally_managed_servers[name]
-      end, vim.tbl_keys(servers or {}))
-      vim.list_extend(ensure_installed, {
-        "bash-language-server",
-        "biome",
-        "jsonlint",
-        "oxlint",
-        "prettierd",
-        "vale",
-      })
+        return not opts.externally_managed_servers[name]
+      end, vim.tbl_keys(opts.servers or {}))
+      vim.list_extend(ensure_installed, opts.ensure_installed)
       -- Global rounded-border tweak for LSP floating windows
       local orig_open_floating_preview = vim.lsp.util.open_floating_preview
       function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
@@ -250,7 +172,7 @@ return {
       end
 
       -- Apply our per-server config using the new vim.lsp.config API
-      for server_name, server in pairs(servers) do
+      for server_name, server in pairs(opts.servers) do
         -- merge cmp capabilities into each server
         server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
 
@@ -258,18 +180,9 @@ return {
         vim.lsp.config(server_name, server)
       end
 
-      -- Taplo is installed by Homebrew because Make also uses it to validate TOML.
-      vim.lsp.enable("taplo")
-
-      -- Optional: custom SourceKit config without require('lspconfig')
-      -- (Only needed if you want to override the defaults from nvim-lspconfig.)
-      vim.lsp.config("sourcekit", {
-        -- These act similarly to the old util.root_pattern(".git", "Package.swift", "compile_commands.json")
-        root_markers = {
-          { "Package.swift", "compile_commands.json" },
-          ".git",
-        },
-      })
+      for _, server_name in ipairs(opts.manually_enabled_servers) do
+        vim.lsp.enable(server_name)
+      end
 
       require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
@@ -278,7 +191,7 @@ return {
       require("mason-lspconfig").setup({
         -- we don't ask it to install anything, just to enable what exists
         automatic_enable = {
-          exclude = { "biome" },
+          exclude = opts.automatic_enable_exclusions,
         },
       })
     end,

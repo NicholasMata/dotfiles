@@ -1,5 +1,158 @@
 return {
   {
+    "neovim/nvim-lspconfig",
+    opts = function(_, opts)
+      opts.servers.cssls = {}
+      opts.servers.vtsls = {}
+      vim.list_extend(opts.ensure_installed, {
+        "biome",
+        "oxlint",
+        "prettierd",
+      })
+    end,
+  },
+  {
+    "stevearc/conform.nvim",
+    opts = {
+      formatters_by_ft = {
+        css = { "prettierd" },
+        javascript = { "biome", "prettierd", stop_after_first = true },
+        javascriptreact = { "biome", "prettierd", stop_after_first = true },
+        typescript = { "biome", "prettierd", stop_after_first = true },
+        typescriptreact = { "biome", "prettierd", stop_after_first = true },
+      },
+      formatters = {
+        biome = {
+          require_cwd = true,
+        },
+        prettierd = {
+          require_cwd = true,
+        },
+      },
+    },
+  },
+  {
+    "mfussenegger/nvim-lint",
+    opts = function(_, opts)
+      local project_linters = {
+        {
+          name = "oxlint",
+          configs = {
+            ".oxlintrc.json",
+            ".oxlintrc.jsonc",
+            "oxlint.config.ts",
+            "oxlint.config.mts",
+          },
+        },
+        {
+          name = "eslint",
+          configs = {
+            "eslint.config.js",
+            "eslint.config.mjs",
+            "eslint.config.cjs",
+            "eslint.config.ts",
+            "eslint.config.mts",
+            "eslint.config.cts",
+            ".eslintrc",
+            ".eslintrc.js",
+            ".eslintrc.cjs",
+            ".eslintrc.json",
+          },
+        },
+      }
+
+      for _, filetype in ipairs({ "javascript", "javascriptreact", "typescript", "typescriptreact" }) do
+        opts.project_linters[filetype] = project_linters
+      end
+    end,
+  },
+  {
+    "nvim-treesitter/nvim-treesitter",
+    opts = function(_, opts)
+      vim.list_extend(opts.ensure_installed, {
+        "css",
+        "html",
+        "javascript",
+        "typescript",
+        "tsx",
+      })
+      vim.list_extend(opts.highlight_filetypes, {
+        "css",
+        "html",
+        "javascript",
+        "javascriptreact",
+        "typescript",
+        "typescriptreact",
+      })
+      vim.list_extend(opts.indent_filetypes, {
+        "css",
+        "html",
+        "javascript",
+        "javascriptreact",
+        "typescript",
+        "typescriptreact",
+      })
+    end,
+  },
+  {
+    "mfussenegger/nvim-dap",
+    opts = function(_, opts)
+      table.insert(opts.ensure_installed, "js")
+      table.insert(opts.setup, function(dap)
+        dap.adapters["pwa-node"] = {
+          type = "server",
+          host = "127.0.0.1",
+          port = "${port}",
+          executable = {
+            command = "js-debug-adapter",
+            args = { "${port}" },
+          },
+        }
+        dap.adapters["pwa-chrome"] = dap.adapters["pwa-node"]
+
+        local node_configurations = {
+          {
+            type = "pwa-node",
+            request = "launch",
+            name = "Launch current file",
+            program = "${file}",
+            cwd = "${workspaceFolder}",
+            sourceMaps = true,
+          },
+          {
+            type = "pwa-node",
+            request = "attach",
+            name = "Attach to a Node process",
+            processId = require("dap.utils").pick_process,
+            cwd = "${workspaceFolder}",
+            sourceMaps = true,
+          },
+        }
+
+        for _, filetype in ipairs({ "javascript", "typescript" }) do
+          dap.configurations[filetype] = node_configurations
+        end
+
+        local browser_configurations = {
+          {
+            type = "pwa-chrome",
+            request = "launch",
+            name = "Launch browser application",
+            url = function()
+              return vim.fn.input("Application URL: ", "http://localhost:5173")
+            end,
+            webRoot = "${workspaceFolder}",
+            sourceMaps = true,
+          },
+        }
+
+        for _, filetype in ipairs({ "javascriptreact", "typescriptreact" }) do
+          dap.configurations[filetype] = browser_configurations
+        end
+      end)
+    end,
+  },
+  {
     "windwp/nvim-ts-autotag",
     event = { "BufReadPre", "BufNewFile" },
     opts = {},

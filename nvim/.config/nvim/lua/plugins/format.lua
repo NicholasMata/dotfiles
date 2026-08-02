@@ -16,18 +16,11 @@ return {
         -- languages here or re-enable it for the disabled ones.
         local disable_filetypes = { c = true, cpp = true }
         return {
-          timeout_ms = 500,
+          timeout_ms = 2000,
           lsp_format = disable_filetypes[vim.bo[bufnr].filetype] and "never" or "fallback",
         }
       end,
       formatters_by_ft = {
-        lua = { "stylua" },
-        typescriptreact = { "biome", "prettierd", stop_after_first = true },
-        typescript = { "biome", "prettierd", stop_after_first = true },
-        javascriptreact = { "biome", "prettierd", stop_after_first = true },
-        javascript = { "biome", "prettierd", stop_after_first = true },
-        json = { "biome" },
-        toml = { "taplo" },
         xml = { "xmllint" },
       },
       formatters = {
@@ -35,12 +28,6 @@ return {
           command = "xmllint",
           args = { "--format", "-" },
           stdin = true,
-        },
-        biome = {
-          require_cwd = true,
-        },
-        prettierd = {
-          require_cwd = true,
         },
       },
     },

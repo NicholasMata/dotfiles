@@ -18,17 +18,20 @@ To install only the Homebrew dependencies and applications, run
 
 ## Prerequisites
 
-- macOS with Xcode Command Line Tools (`xcode-select --install`)
+- macOS with Xcode for Swift development, or Xcode Command Line Tools
+  (`xcode-select --install`) when Swift development is not needed
 - [Homebrew](https://brew.sh)
 - [NVM](https://github.com/nvm-sh/nvm) for Node.js development and
   Node-powered Neovim tools
 - The [.NET SDK](https://dotnet.microsoft.com/download) for C# development
 
-NVM and the .NET SDK are optional unless you use their corresponding Neovim
-features. Zinit is installed by `make install`; it can also be installed
-separately with `make zinit`. Its release tag and commit are pinned in the
-Makefile so a new machine receives the same version. To upgrade Zinit, update
-both `ZINIT_VERSION` and `ZINIT_REVISION`, then run `make zinit`.
+NVM, Xcode, and the .NET SDK are optional unless you use their corresponding
+Neovim features. The Homebrew bundle installs Temurin 21 for Kotlin language
+tooling; use each project's Gradle wrapper (`./gradlew`) instead of requiring a
+global Gradle installation. Zinit is installed by `make install`; it can also
+be installed separately with `make zinit`. Its release tag and commit are
+pinned in the Makefile so a new machine receives the same version. To upgrade
+Zinit, update both `ZINIT_VERSION` and `ZINIT_REVISION`, then run `make zinit`.
 
 The Node-powered `webtorrent` and `markdownlint-cli2` commands are installed
 through npm so Node remains managed by NVM rather than Homebrew. The locked
@@ -45,6 +48,30 @@ make node-dependencies
 
 The wrappers installed by `make node-dependencies` always use NVM's Node 24,
 regardless of the Node version active in the current shell.
+
+## Neovim language development
+
+The Neovim configuration provides language servers, completion, formatting,
+and Treesitter parsing for C#, TypeScript/React, Swift, and Kotlin. Debugging
+is configured for C#, Node.js, browser-based React applications, and Kotlin.
+It also provides Microsoft SQL Server completion, object discovery,
+connections, and query execution through `mssql.nvim`.
+
+Tool ownership is split deliberately:
+
+- Microsoft manages the .NET SDK, and Mason installs Roslyn and NetCoreDbg.
+- NVM manages Node.js, while Mason installs VTSLS, Biome, Prettierd, Oxlint,
+  the CSS language server, and the JavaScript debug adapter.
+- Xcode supplies Swift and SourceKit-LSP; Homebrew supplies SwiftFormat.
+- Homebrew supplies Temurin 21; Mason installs the Kotlin language server,
+  Ktlint, and the Kotlin debug adapter.
+- Mason installs SQL Formatter, configured for Transact-SQL. `mssql.nvim`
+  downloads and manages Microsoft SQL Tools Service itself.
+
+ESLint remains project-local. Projects with an ESLint configuration should
+list ESLint and any required plugins in their own `package.json`. Kotlin
+projects should commit and use their Gradle wrapper. Run `:checkhealth mata`
+inside Neovim to identify missing SDKs or language tools.
 
 Run the repository's non-destructive validation checks with:
 

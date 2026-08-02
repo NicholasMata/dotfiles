@@ -15,70 +15,49 @@ return {
     build = ":TSUpdate",
     opts = {
       install_dir = vim.fn.stdpath("data") .. "/site",
+      ensure_installed = {
+        "regex",
+        "bash",
+        "c",
+        "diff",
+        "gitcommit",
+        "git_rebase",
+        "vim",
+        "vimdoc",
+      },
+      highlight_filetypes = {
+        "bash",
+        "c",
+        "diff",
+        "gitcommit",
+        "gitrebase",
+        "tmux",
+        "vim",
+      },
+      indent_filetypes = {
+        "bash",
+        "c",
+        "tmux",
+        "vim",
+      },
     },
     config = function(_, opts)
       require("nvim-treesitter").setup(opts)
 
-      require("nvim-treesitter").install({
-        "regex",
-        "bash",
-        "c",
-        "c_sharp",
-        "diff",
-        "html",
-        "javascript",
-        "json",
-        "lua",
-        "luadoc",
-        "markdown",
-        "typescript",
-        "tsx",
-        "vim",
-        "vimdoc",
-        "gitcommit",
-        "git_rebase",
-      })
+      require("nvim-treesitter").install(opts.ensure_installed)
 
       vim.api.nvim_create_autocmd("FileType", {
-        pattern = {
-          "bash",
-          "c",
-          "cs",
-          "diff",
-          "gitcommit",
-          "gitrebase",
-          "html",
-          "javascript",
-          "javascriptreact",
-          "json",
-          "lua",
-          "markdown",
-          "tmux",
-          "typescript",
-          "typescriptreact",
-          "vim",
-        },
+        pattern = opts.highlight_filetypes,
         callback = function()
-          vim.treesitter.start()
+          -- Parser installation is asynchronous on a fresh setup. If the
+          -- parser is not ready yet, highlighting starts the next time a
+          -- buffer with this filetype opens.
+          pcall(vim.treesitter.start)
         end,
       })
 
       vim.api.nvim_create_autocmd("FileType", {
-        pattern = {
-          "bash",
-          "c",
-          "cs",
-          "html",
-          "javascript",
-          "javascriptreact",
-          "json",
-          "lua",
-          "markdown",
-          "tmux",
-          "typescript",
-          "typescriptreact",
-          "vim",
-        },
+        pattern = opts.indent_filetypes,
         callback = function()
           vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
         end,

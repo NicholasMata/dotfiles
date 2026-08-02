@@ -3,6 +3,7 @@ brew "stow"
 
 # Required to validate this repository.
 brew "stylua"
+brew "swiftformat"
 brew "taplo"
 
 # Commands referenced directly by the zsh configuration.
@@ -26,3 +27,6 @@ cask "font-meslo-lg-nerd-font"
 cask "ghostty"
 cask "mouseless"
 cask "nightfall"
+
+# LTS JDK used by Kotlin language tooling and Gradle projects.
+cask "temurin@21"

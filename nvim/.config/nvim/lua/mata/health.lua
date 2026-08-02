@@ -60,6 +60,31 @@ return {
       "tree-sitter",
     }, vim.health.warn)
 
-    vim.health.info("Install managed command-line tools with `make dependencies`")
+    check_executables("Language SDKs", {
+      "dotnet",
+      "java",
+      "node",
+      "npm",
+      "sourcekit-lsp",
+      "swift",
+    }, vim.health.warn)
+
+    check_executables("Language development tools", {
+      "biome",
+      "js-debug-adapter",
+      "kotlin-debug-adapter",
+      "kotlin-language-server",
+      "ktlint",
+      "netcoredbg",
+      "prettierd",
+      "roslyn-language-server",
+      "sql-formatter",
+      "swiftformat",
+      "vtsls",
+      "vscode-css-language-server",
+    }, vim.health.warn)
+
+    vim.health.info("Install Homebrew tools with `make dependencies`")
+    vim.health.info("Install Neovim development tools with `:MasonToolsInstallSync`")
   end,
 }

@@ -3,39 +3,16 @@ return {
     -- Linting
     "mfussenegger/nvim-lint",
     event = { "BufReadPre", "BufNewFile" },
-    config = function()
+    opts = {
+      linters_by_ft = {
+        text = { "vale" },
+      },
+      project_linters = {},
+    },
+    config = function(_, opts)
       local lint = require("lint")
 
-      lint.linters_by_ft = {
-        markdown = { "markdownlint-cli2" },
-        json = { "jsonlint" },
-        text = { "vale" },
-      }
-
-      local javascript_filetypes = {
-        javascript = true,
-        javascriptreact = true,
-        typescript = true,
-        typescriptreact = true,
-      }
-      local oxlint_configs = {
-        ".oxlintrc.json",
-        ".oxlintrc.jsonc",
-        "oxlint.config.ts",
-        "oxlint.config.mts",
-      }
-      local eslint_configs = {
-        "eslint.config.js",
-        "eslint.config.mjs",
-        "eslint.config.cjs",
-        "eslint.config.ts",
-        "eslint.config.mts",
-        "eslint.config.cts",
-        ".eslintrc",
-        ".eslintrc.js",
-        ".eslintrc.cjs",
-        ".eslintrc.json",
-      }
+      lint.linters_by_ft = opts.linters_by_ft
 
       local function has_config(bufnr, config_names)
         local filename = vim.api.nvim_buf_get_name(bufnr)
@@ -50,17 +27,17 @@ return {
 
       local function lint_buffer(bufnr)
         vim.api.nvim_buf_call(bufnr, function()
-          if not javascript_filetypes[vim.bo[bufnr].filetype] then
+          local project_linters = opts.project_linters[vim.bo[bufnr].filetype]
+          if not project_linters then
             lint.try_lint()
             return
           end
 
           local linters = {}
-          if has_config(bufnr, oxlint_configs) then
-            table.insert(linters, "oxlint")
-          end
-          if has_config(bufnr, eslint_configs) then
-            table.insert(linters, "eslint")
+          for _, project_linter in ipairs(project_linters) do
+            if has_config(bufnr, project_linter.configs) then
+              table.insert(linters, project_linter.name)
+            end
           end
           if #linters > 0 then
             lint.try_lint(linters)

@@ -1,8 +1,3 @@
-local dap_cs_path = vim.fn.expand("~/Developer/nvim-dap-cs")
-if vim.fn.isdirectory(dap_cs_path) == 0 then
-  dap_cs_path = nil
-end
-
 return {
   {
     "mfussenegger/nvim-dap",
@@ -11,7 +6,11 @@ return {
       "williamboman/mason.nvim",
       "jay-babu/mason-nvim-dap.nvim",
     },
-    config = function()
+    opts = {
+      ensure_installed = {},
+      setup = {},
+    },
+    config = function(_, opts)
       local dap = require("dap")
 
       require("mason-nvim-dap").setup({
@@ -25,10 +24,7 @@ return {
 
         -- You'll need to check that you have the required things installed
         -- online, please don't ask me how to install them :)
-        ensure_installed = {
-          -- Update this to ensure that you have the debuggers for the langs you want
-          "delve",
-        },
+        ensure_installed = opts.ensure_installed,
       })
 
       -- Basic debugging keymaps, feel free to change to your liking!
@@ -70,6 +66,10 @@ return {
       vim.fn.sign_define("DapBreakpoint", dap_signs.breakpoint)
       vim.fn.sign_define("DapBreakpointRejected", dap_signs.breakpoint_rejected)
       vim.fn.sign_define("DapStopped", dap_signs.stopped)
+
+      for _, setup in ipairs(opts.setup) do
+        setup(dap)
+      end
     end,
   },
   {
@@ -108,28 +108,5 @@ return {
       vim.keymap.set("v", "<leader>de", dapui.eval, { desc = "[e]val" })
       vim.keymap.set("n", "<leader>dr", dap.repl.toggle, { desc = "[r]epl" })
     end,
-  },
-  {
-    "leoluz/nvim-dap-go",
-    opts = {
-      delve = {
-        -- On Windows delve must be run attached or it crashes.
-        -- See https://github.com/leoluz/nvim-dap-go/blob/main/README.md#configuring
-        detached = vim.fn.has("win32") == 0,
-      },
-    },
-    ft = "go",
-    dependencies = {
-      "mfussenegger/nvim-dap",
-    },
-  },
-  {
-    "nicholasmata/nvim-dap-cs",
-    ft = "cs",
-    dir = dap_cs_path,
-    config = true,
-    dependencies = {
-      "mfussenegger/nvim-dap",
-    },
   },
 }
