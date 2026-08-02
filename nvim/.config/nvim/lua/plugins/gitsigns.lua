@@ -26,7 +26,7 @@ return {
         end
 
         -- Navigation
-        map("n", "<leader>gn", function()
+        map("n", "<leader>ghn", function()
           if vim.wo.diff then
             vim.cmd.normal({ "]c", bang = true })
           else
@@ -34,7 +34,7 @@ return {
           end
         end, { desc = "[n]ext hunk" })
 
-        map("n", "<leader>gp", function()
+        map("n", "<leader>ghp", function()
           if vim.wo.diff then
             vim.cmd.normal({ "[c", bang = true })
           else
@@ -44,22 +44,21 @@ return {
 
         -- Actions
         -- visual mode
-        map("v", "<leader>gs", function()
+        map("v", "<leader>ghs", function()
           gitsigns.stage_hunk({ vim.fn.line("."), vim.fn.line("v") })
-        end, { desc = "[h]unk [s]tage" })
-        -- map("v", "<leader>gr", function()
+        end, { desc = "[s]tage hunk" })
+        -- map("v", "<leader>ghr", function()
         --   gitsigns.undo_stage_hunk({ vim.fn.line("."), vim.fn.line("v") })
-        -- end, { desc = "[h]unk [r]eset" })
+        -- end, { desc = "[r]eset hunk" })
         -- normal mode
-        map("n", "<leader>gr", gitsigns.reset_hunk, { desc = "[r]eset hunk" })
-        map("n", "<leader>gR", gitsigns.reset_buffer, { desc = "[R]eset buffer" })
-        map("n", "<leader>gs", gitsigns.stage_hunk, { desc = "[s]tage hunk" })
-        map("n", "<leader>gS", gitsigns.stage_buffer, { desc = "[S]tage buffer" })
-        -- map("n", "<leader>gu", gitsigns.undo_stage_hunk, { desc = "[u]ndo staged hunk" })
-        map("n", "<leader>gP", gitsigns.preview_hunk, { desc = "[P]review hunk" })
-        map("n", "<leader>gb", gitsigns.blame_line, { desc = "[b]lame line" })
-        -- map("n", "<leader>gd", gitsigns.diffthis, { desc = "[d]iff against index" })
-        -- map("n", "<leader>gD", function()
+        map("n", "<leader>ghr", gitsigns.reset_hunk, { desc = "[r]eset hunk" })
+        map("n", "<leader>ghR", gitsigns.reset_buffer, { desc = "[R]eset buffer" })
+        map("n", "<leader>ghs", gitsigns.stage_hunk, { desc = "[s]tage hunk" })
+        map("n", "<leader>ghS", gitsigns.stage_buffer, { desc = "[S]tage buffer" })
+        -- map("n", "<leader>ghu", gitsigns.undo_stage_hunk, { desc = "[u]ndo staged hunk" })
+        map("n", "<leader>ghP", gitsigns.preview_hunk, { desc = "[P]review hunk" })
+        -- map("n", "<leader>ghd", gitsigns.diffthis, { desc = "[d]iff against index" })
+        -- map("n", "<leader>ghD", function()
         --   gitsigns.diffthis("@")
         -- end, { desc = "[D]iff against last commit" })
         -- -- Toggles

@@ -70,6 +70,7 @@ function M.run()
     "<leader>d",
     "<leader>f",
     "<leader>g",
+    "<leader>gh",
     "<leader>gt",
     "<leader>l",
     "<leader>m",

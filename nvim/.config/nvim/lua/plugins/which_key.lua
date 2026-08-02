@@ -9,6 +9,7 @@ return {
         { "<leader>d", group = "[d]ebug" },
         { "<leader>f", group = "[f]ind / format" },
         { "<leader>g", group = "[g]it" },
+        { "<leader>gh", group = "git [h]unks" },
         { "<leader>gt", group = "git [t]oggles" },
         { "<leader>l", group = "[l]sp" },
         { "<leader>m", group = "[m]arkdown / SQL" },
