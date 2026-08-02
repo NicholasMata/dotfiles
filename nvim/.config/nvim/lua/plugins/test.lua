@@ -20,6 +20,13 @@ return {
     end,
     keys = {
       {
+        "<leader>ta",
+        function()
+          require("neotest").run.run({ suite = true })
+        end,
+        desc = "run [a]ll tests",
+      },
+      {
         "<leader>tr",
         function()
           require("neotest").run.run()
@@ -60,6 +67,27 @@ return {
           require("neotest").output.open({ enter = true })
         end,
         desc = "show test [o]utput",
+      },
+      {
+        "<leader>tp",
+        function()
+          require("neotest").output_panel.toggle()
+        end,
+        desc = "toggle output [p]anel",
+      },
+      {
+        "<leader>tw",
+        function()
+          require("neotest").watch.toggle()
+        end,
+        desc = "toggle test [w]atch",
+      },
+      {
+        "<leader>tx",
+        function()
+          require("neotest").run.stop()
+        end,
+        desc = "stop nearest test",
       },
     },
   },
