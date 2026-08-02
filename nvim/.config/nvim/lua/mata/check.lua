@@ -57,6 +57,29 @@ function M.run()
   local neotest = plugin_opts("neotest")
   expect_keys(neotest.adapters, { "dotnet", "go", "jest", "vitest" }, "test adapter")
 
+  local which_key = plugin_opts("which-key.nvim")
+  local which_key_groups = {}
+  for _, mapping in ipairs(which_key.spec or {}) do
+    if mapping.group then
+      which_key_groups[mapping[1]] = mapping.group
+    end
+  end
+  expect_keys(which_key_groups, {
+    "<leader>b",
+    "<leader>c",
+    "<leader>d",
+    "<leader>f",
+    "<leader>g",
+    "<leader>gt",
+    "<leader>l",
+    "<leader>m",
+    "<leader>n",
+    "<leader>o",
+    "<leader>s",
+    "<leader>t",
+    "<leader>u",
+  }, "WhichKey group")
+
   local lsp = plugin_opts("nvim-lspconfig")
   expect_keys(lsp.servers, {
     "bashls",

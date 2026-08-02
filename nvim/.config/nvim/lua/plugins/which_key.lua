@@ -3,9 +3,21 @@ return {
     "folke/which-key.nvim",
     event = "VeryLazy",
     opts = {
-      -- your configuration comes here
-      -- or leave it empty to use the default settings
-      -- refer to the configuration section below
+      spec = {
+        { "<leader>b", group = "[b]uffers" },
+        { "<leader>c", group = "[c]ode" },
+        { "<leader>d", group = "[d]ebug" },
+        { "<leader>f", group = "[f]ind / format" },
+        { "<leader>g", group = "[g]it" },
+        { "<leader>gt", group = "git [t]oggles" },
+        { "<leader>l", group = "[l]sp" },
+        { "<leader>m", group = "[m]arkdown / SQL" },
+        { "<leader>n", group = "[n]ode packages / notifications" },
+        { "<leader>o", group = "[o]pen / run / OS" },
+        { "<leader>s", group = "[s]earch" },
+        { "<leader>t", group = "[t]ests" },
+        { "<leader>u", group = "[u]I toggles" },
+      },
     },
     keys = {
       {
@@ -16,20 +28,5 @@ return {
         desc = "Buffer Local Keymaps (which-key)",
       },
     },
-    config = function() -- This is the function that runs, AFTER loading
-      local wk = require("which-key")
-      wk.setup()
-
-      -- Declare leader groups (no rhs)
-      wk.add({
-        { "<leader>m", group = "[m]arkdown" },
-        { "<leader>mp", group = "[p]review" },
-        { "<leader>l", group = "[l]sp" },
-        { "<leader>d", group = "[d]ebug" },
-        { "<leader>t", group = "[t]ests" },
-        { "<leader>g", group = "[g]it" },
-        { "<leader>o", group = "[o]pen / run" },
-      }, { mode = "n" })
-    end,
   },
 }
