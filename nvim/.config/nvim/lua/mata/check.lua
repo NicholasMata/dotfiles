@@ -56,6 +56,7 @@ function M.run()
   expect_keys(lsp.servers, {
     "bashls",
     "cssls",
+    "jsonls",
     "kotlin_language_server",
     "lua_ls",
     "roslyn",

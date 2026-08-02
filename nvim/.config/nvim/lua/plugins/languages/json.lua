@@ -1,7 +1,19 @@
 return {
   {
     "neovim/nvim-lspconfig",
+    dependencies = {
+      "b0o/schemastore.nvim",
+    },
     opts = function(_, opts)
+      opts.servers.jsonls = {
+        settings = {
+          json = {
+            schemas = require("schemastore").json.schemas(),
+            validate = { enable = true },
+          },
+        },
+      }
+
       for _, tool in ipairs({ "biome", "jsonlint" }) do
         if not vim.tbl_contains(opts.ensure_installed, tool) then
           table.insert(opts.ensure_installed, tool)
