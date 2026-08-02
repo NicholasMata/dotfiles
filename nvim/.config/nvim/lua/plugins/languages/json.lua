@@ -2,7 +2,11 @@ return {
   {
     "neovim/nvim-lspconfig",
     opts = function(_, opts)
-      vim.list_extend(opts.ensure_installed, { "biome", "jsonlint" })
+      for _, tool in ipairs({ "biome", "jsonlint" }) do
+        if not vim.tbl_contains(opts.ensure_installed, tool) then
+          table.insert(opts.ensure_installed, tool)
+        end
+      end
     end,
   },
   {

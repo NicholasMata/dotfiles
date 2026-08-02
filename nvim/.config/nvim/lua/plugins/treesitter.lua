@@ -17,7 +17,6 @@ return {
       install_dir = vim.fn.stdpath("data") .. "/site",
       ensure_installed = {
         "regex",
-        "bash",
         "c",
         "diff",
         "gitcommit",
@@ -26,7 +25,6 @@ return {
         "vimdoc",
       },
       highlight_filetypes = {
-        "bash",
         "c",
         "diff",
         "gitcommit",
@@ -35,7 +33,6 @@ return {
         "vim",
       },
       indent_filetypes = {
-        "bash",
         "c",
         "tmux",
         "vim",

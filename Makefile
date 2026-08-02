@@ -73,4 +73,5 @@ endif
 	ghostty +validate-config --config-file="$(CURDIR)/ghostty/.config/ghostty/config"
 	nvim --headless -u NONE "+lua for _, path in ipairs(vim.fn.glob('nvim/.config/nvim/**/*.lua', false, true)) do assert(loadfile(path)) end" +qa
 	nvim -i NONE --headless +qa
+	nvim -i NONE --headless "+lua require('mata.check').run()" +qa
 	git diff --check

@@ -4,11 +4,15 @@ return {
     opts = function(_, opts)
       opts.servers.cssls = {}
       opts.servers.vtsls = {}
-      vim.list_extend(opts.ensure_installed, {
+      for _, tool in ipairs({
         "biome",
         "oxlint",
         "prettierd",
-      })
+      }) do
+        if not vim.tbl_contains(opts.ensure_installed, tool) then
+          table.insert(opts.ensure_installed, tool)
+        end
+      end
     end,
   },
   {
