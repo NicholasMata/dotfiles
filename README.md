@@ -99,6 +99,14 @@ macOS Spaces, so operating-system updates could break it. Aerospace instead
 uses virtual workspaces by hiding and showing windows. This loses some built-in
 macOS functionality, but I am comfortable with that compromise.
 
+### [NanoBar](https://github.com/xeydev/nanobar)
+
+NanoBar displays AeroSpace workspaces and their applications in a native bar
+along the left edge of each monitor. AeroSpace notifies it when the focused
+workspace changes, and the tracked configuration uses a compact blurred style.
+Homebrew installs NanoBar, while `brew services start nanobar` enables its
+per-user background service.
+
 ### [Herdr](https://herdr.dev/)
 
 I use Herdr as a terminal-based agent multiplexer. These dotfiles configure its

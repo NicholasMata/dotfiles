@@ -17,6 +17,13 @@ after-startup-command = []
 # Start AeroSpace at login
 start-at-login = true
 
+# Keep NanoBar's workspace indicator synchronized with AeroSpace.
+exec-on-workspace-change = [
+  '/bin/bash',
+  '-c',
+  'printf "%s" "$AEROSPACE_FOCUSED_WORKSPACE" | /usr/bin/nc -U /tmp/nanobar-notify.sock',
+]
+
 # Normalizations. See: https://nikitabobko.github.io/AeroSpace/guide#normalization
 enable-normalization-flatten-containers = true
 enable-normalization-opposite-orientation-for-nested-containers = true
@@ -54,7 +61,7 @@ key-mapping.preset = 'qwerty'
 [gaps]
 inner.horizontal = 8
 inner.vertical = 8
-outer.left = 8
+outer.left = 54
 outer.bottom = 8
 outer.top = 8
 outer.right = 8

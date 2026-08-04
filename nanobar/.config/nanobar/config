@@ -1,0 +1,11 @@
+theme = system
+bar-position = left
+workspaces-mode = expanded
+
+bar-background = none
+bar-blur-material = regular
+bar-margin = 8
+bar-shadow = false
+
+pill-style = blur
+pill-corner-radius = 12

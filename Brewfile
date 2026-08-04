@@ -23,6 +23,8 @@ brew "tree-sitter-cli"
 # macOS applications configured or used by these dotfiles.
 tap "nikitabobko/tap", trusted: { cask: "aerospace" }
 cask "nikitabobko/tap/aerospace"
+tap "xeydev/tap", trusted: { formula: "nanobar" }
+brew "xeydev/tap/nanobar"
 cask "font-meslo-lg-nerd-font"
 cask "ghostty"
 cask "mouseless"
