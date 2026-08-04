@@ -105,6 +105,12 @@ I use Herdr as a terminal-based agent multiplexer. These dotfiles configure its
 Rosé Pine theme, workspace and pane key bindings, and navigation between Herdr
 and Neovim.
 
+### [Mouseless](https://mouseless.click/)
+
+Mouseless provides keyboard-driven pointer control. Its grid, movement,
+scrolling, mouse-button, and overlay key bindings are tracked in this
+repository. License information and runtime state are intentionally excluded.
+
 ### [Neovim](https://neovim.io/)
 
 Neovim is my main editor and my favorite after trying many editors over the
@@ -114,9 +120,8 @@ me better performance and more control over personalization.
 ### Additional macOS applications
 
 The Homebrew bundle also installs
-[Mouseless](https://mouseless.click/) for keyboard-driven pointer control and
 [Nightfall](https://github.com/r-thomson/Nightfall/) for toggling macOS dark
-mode. They do not have configuration tracked in this repository.
+mode. Nightfall does not have configuration tracked in this repository.
 
 ### Powerlevel10k
 
