@@ -54,7 +54,7 @@ return {
     check_executables("Feature-specific command-line tools", {
       "codex-acp",
       "lazygit",
-      "markdownlint-cli2",
+      "rumdl",
       "stylua",
       "taplo",
       "tree-sitter",

@@ -14,15 +14,17 @@ make install
 
 To install only the Homebrew dependencies and applications, run
 `make dependencies`. To apply the dotfiles without running Homebrew, run
-`make stow`.
+`make stow`. Optional Homebrew packages are excluded from these commands. Run
+`make optional-dependencies` to install only the optional packages, or
+`make install-optional` to install everything and apply the dotfiles.
 
 ## Prerequisites
 
 - macOS with Xcode for Swift development, or Xcode Command Line Tools
   (`xcode-select --install`) when Swift development is not needed
 - [Homebrew](https://brew.sh)
-- [NVM](https://github.com/nvm-sh/nvm) for Node.js development and
-  Node-powered Neovim tools
+- [NVM](https://github.com/nvm-sh/nvm) for Node.js development and Neovim
+  language tooling
 - The [.NET SDK](https://dotnet.microsoft.com/download) for C# development
 
 NVM, Xcode, and the .NET SDK are optional unless you use their corresponding
@@ -33,21 +35,10 @@ be installed separately with `make zinit`. Its release tag and commit are
 pinned in the Makefile so a new machine receives the same version. To upgrade
 Zinit, update both `ZINIT_VERSION` and `ZINIT_REVISION`, then run `make zinit`.
 
-The Node-powered `webtorrent` and `markdownlint-cli2` commands are installed
-through npm so Node remains managed by NVM rather than Homebrew. The locked
-dependency graph keeps WebTorrent CLI 6 while overriding vulnerable transitive
-packages where compatible. Installation skips package lifecycle scripts, then
-rebuilds WebTorrent's required native modules. Install Node 24 LTS and activate
-it before installing the command-line packages:
-
-```sh
-nvm install 24
-nvm use 24
-make node-dependencies
-```
-
-The wrappers installed by `make node-dependencies` always use NVM's Node 24,
-regardless of the Node version active in the current shell.
+Homebrew installs [rumdl](https://github.com/rvben/rumdl) for Markdown linting
+in Neovim and repository checks. The optional Homebrew bundle installs
+[SuperSeedeR](https://github.com/Jagalite/superseedr) as the terminal BitTorrent
+client, replacing the Node-powered WebTorrent CLI. Neither tool requires Node.
 
 ## Neovim language development
 

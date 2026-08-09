@@ -18,6 +18,7 @@ brew "fd"
 brew "herdr"
 brew "lazygit"
 brew "neovim"
+brew "rumdl"
 brew "tree-sitter-cli"
 
 # macOS applications configured or used by these dotfiles.
