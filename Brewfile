@@ -6,6 +6,9 @@ brew "stylua"
 brew "swiftformat"
 brew "taplo"
 
+# General-purpose command-line tools.
+brew "jq"
+
 # Commands referenced directly by the zsh configuration.
 brew "fzf"
 brew "ripgrep"
