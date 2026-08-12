@@ -1,2 +1,5 @@
 # Optional terminal BitTorrent client.
 brew "superseedr"
+
+# LTS JDK used by Kotlin language tooling and Gradle projects.
+cask "temurin@21"
