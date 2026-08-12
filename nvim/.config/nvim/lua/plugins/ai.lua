@@ -66,13 +66,13 @@ return {
       "n",
       "<LocalLeader>a",
       "<cmd>CodeCompanionChat Toggle<cr>",
-      { noremap = true, silent = true }
+      { noremap = true, silent = true, desc = "[a]i chat toggle" }
     )
     vim.api.nvim_set_keymap(
       "v",
       "<LocalLeader>a",
       "<cmd>CodeCompanionChat Toggle<cr>",
-      { noremap = true, silent = true }
+      { noremap = true, silent = true, desc = "[a]i chat toggle" }
     )
     vim.api.nvim_set_keymap("v", "ga", "<cmd>CodeCompanionChat Add<cr>", { noremap = true, silent = true })
 

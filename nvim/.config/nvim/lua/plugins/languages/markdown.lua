@@ -4,8 +4,8 @@ return {
     cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
     ft = { "markdown" },
     config = function()
-      vim.keymap.set("n", "<leader>mp", "<cmd>MarkdownPreview<cr>", { desc = "[p]review" })
-      vim.keymap.set("n", "<leader>ms", "<cmd>MarkdownPreviewStop<cr>", { desc = "[p]review [s]top" })
+      vim.keymap.set("n", "<leader>pp", "<cmd>MarkdownPreview<cr>", { desc = "[p]review" })
+      vim.keymap.set("n", "<leader>ps", "<cmd>MarkdownPreviewStop<cr>", { desc = "[s]top" })
     end,
     build = function()
       vim.fn["mkdp#util#install"]()

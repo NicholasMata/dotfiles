@@ -114,17 +114,17 @@ return {
 
       vim.api.nvim_set_keymap(
         "n",
-        "<leader>fd",
+        "<leader>cfd",
         ":FormatDisable<CR>",
-        { noremap = true, silent = true, desc = "[f]ormat [d]isable" }
+        { noremap = true, silent = true, desc = "[d]isable autoformat" }
       )
       vim.api.nvim_set_keymap(
         "n",
-        "<leader>fe",
+        "<leader>cfe",
         ":FormatEnable<CR>",
-        { noremap = true, silent = true, desc = "[f]ormat [e]nable" }
+        { noremap = true, silent = true, desc = "[e]nable autoformat" }
       )
-      -- vim.keymap.set("n", "<leader>fb", function()
+      -- vim.keymap.set("n", "<leader>cfb", function()
       -- 	require("conform").format({ async = true, lsp_format = "fallback" })
       -- end, { noremap = true, silent = true, desc = "[f]ormat [b]uffer" })
     end,
