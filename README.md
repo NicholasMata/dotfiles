@@ -28,15 +28,17 @@ To install only the Homebrew dependencies and applications, run
 - The [.NET SDK](https://dotnet.microsoft.com/download) for C# development
 
 NVM, Xcode, and the .NET SDK are optional unless you use their corresponding
-Neovim features. The Homebrew bundle installs Temurin 21 for Kotlin language
-tooling; use each project's Gradle wrapper (`./gradlew`) instead of requiring a
-global Gradle installation. Zinit is installed by `make install`; it can also
-be installed separately with `make zinit`. Its release tag and commit are
-pinned in the Makefile so a new machine receives the same version. To upgrade
-Zinit, update both `ZINIT_VERSION` and `ZINIT_REVISION`, then run `make zinit`.
+Neovim features. The optional Homebrew bundle installs Temurin 21 for Kotlin
+language tooling; use each project's Gradle wrapper (`./gradlew`) instead of
+requiring a global Gradle installation. Zinit is installed by `make install`;
+it can also be installed separately with `make zinit`. Its release tag and
+commit are pinned in the Makefile so a new machine receives the same version.
+To upgrade Zinit, update both `ZINIT_VERSION` and `ZINIT_REVISION`, then run
+`make zinit`.
 
-Homebrew installs [rumdl](https://github.com/rvben/rumdl) for Markdown linting
-in Neovim and repository checks. The optional Homebrew bundle installs
+Homebrew installs [rumdl](https://github.com/rvben/rumdl) and
+[Selene](https://github.com/Kampfkarren/selene) for Markdown and Lua linting in
+Neovim and repository checks. The optional Homebrew bundle installs
 [SuperSeedeR](https://github.com/Jagalite/superseedr) as the terminal BitTorrent
 client, replacing the Node-powered WebTorrent CLI. Neither tool requires Node.
 

@@ -1,0 +1,7 @@
+std = "lua51+neovim"
+
+[lints]
+# Lazy plugin specs intentionally combine positional and named fields.
+mixed_table = "allow"
+# Neovim plugins may deliberately publish globals through _G.
+global_usage = "allow"

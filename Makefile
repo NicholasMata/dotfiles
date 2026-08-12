@@ -56,10 +56,11 @@ ifndef STYLUA
 	$(error StyLua is required for formatting checks. Run `make dependencies` to install it)
 endif
 	@for package in $(STOW_PACKAGES); do test -d "$$package" || { echo "Missing Stow package: $$package"; exit 1; }; done
-	@for command in aerospace git ghostty nvim rumdl stow stylua taplo zsh; do command -v "$$command" >/dev/null || { echo "Missing required command: $$command"; exit 1; }; done
+	@for command in aerospace git ghostty nvim rumdl selene stow stylua taplo zsh; do command -v "$$command" >/dev/null || { echo "Missing required command: $$command"; exit 1; }; done
 	$(BREW) bundle check --no-upgrade --file="$(BREWFILE)"
 	zsh -n zsh/.zshenv zsh/.zshrc
 	rumdl check README.md
+	selene nvim/.config/nvim
 	$(STYLUA) --config-path="$(STYLUA_CONFIG)" --check nvim/.config/nvim
 	taplo check aerospace/.config/aerospace/aerospace.toml herdr/.config/herdr/config.toml
 	ghostty +validate-config --config-file="$(CURDIR)/ghostty/.config/ghostty/config"

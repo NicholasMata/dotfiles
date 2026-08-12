@@ -1,0 +1,10 @@
+---
+globals:
+  vim:
+    any: true
+  Snacks:
+    any: true
+  dd:
+    any: true
+  bt:
+    any: true

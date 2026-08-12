@@ -55,6 +55,7 @@ return {
       "codex-acp",
       "lazygit",
       "rumdl",
+      "selene",
       "stylua",
       "taplo",
       "tree-sitter",

@@ -165,10 +165,10 @@ return {
       vim.list_extend(ensure_installed, opts.ensure_installed)
       -- Global rounded-border tweak for LSP floating windows
       local orig_open_floating_preview = vim.lsp.util.open_floating_preview
-      function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
-        opts = opts or {}
-        opts.border = opts.border or "rounded"
-        return orig_open_floating_preview(contents, syntax, opts, ...)
+      function vim.lsp.util.open_floating_preview(contents, syntax, preview_opts, ...)
+        preview_opts = preview_opts or {}
+        preview_opts.border = preview_opts.border or "rounded"
+        return orig_open_floating_preview(contents, syntax, preview_opts, ...)
       end
 
       -- Apply our per-server config using the new vim.lsp.config API

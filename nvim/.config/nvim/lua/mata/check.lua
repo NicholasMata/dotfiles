@@ -130,7 +130,7 @@ function M.run()
   }, "formatter filetype")
 
   local lint = plugin_opts("nvim-lint")
-  expect_keys(lint.linters_by_ft, { "json", "markdown", "text" }, "linter filetype")
+  expect_keys(lint.linters_by_ft, { "json", "lua", "markdown", "text" }, "linter filetype")
   expect_keys(lint.project_linters, {
     "javascript",
     "javascriptreact",
