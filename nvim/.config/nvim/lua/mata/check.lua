@@ -165,8 +165,9 @@ function M.run()
   expect_unique(treesitter.indent_filetypes, "Treesitter indent filetype")
 
   local dap = plugin_opts("nvim-dap")
-  expect_list_values(dap.ensure_installed, { "coreclr", "delve", "js", "kotlin" }, "debug adapter")
+  expect_list_values(dap.ensure_installed, { "delve", "js", "kotlin" }, "debug adapter")
   expect_unique(dap.ensure_installed, "debug adapter")
+  plugin_opts("nvim-dap-cs")
 
   if #failures > 0 then
     for _, message in ipairs(failures) do
