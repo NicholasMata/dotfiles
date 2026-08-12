@@ -1,4 +1,4 @@
--- Adds git related signs to the gutter, as well as utilities for managing changes
+-- Git signs, history, and repository integrations
 -- NOTE: gitsigns is already included in init.lua but contains only the base
 -- config. This will add also the recommended keymaps.
 
@@ -65,6 +65,14 @@ return {
         map("n", "<leader>gtb", gitsigns.toggle_current_line_blame, { desc = "show [b]lame line" })
         map("n", "<leader>gtD", gitsigns.preview_hunk_inline, { desc = "show [D]eleted" })
       end,
+    },
+  },
+  {
+    "rbong/vim-flog",
+    cmd = { "Flog", "Flogsplit", "Floggit" },
+    dependencies = { "tpope/vim-fugitive" },
+    keys = {
+      { "<leader>gv", "<cmd>Flog<cr>", desc = "[v]iew commit graph" },
     },
   },
 }

@@ -52,6 +52,9 @@ end
 function M.run()
   failures = {}
 
+  plugin_opts("vim-flog")
+  plugin_opts("vim-fugitive")
+
   plugin_opts("overseer.nvim")
   for _, template in ipairs({ "dotnet", "gradle", "swift" }) do
     local template_files = vim.api.nvim_get_runtime_file("lua/overseer/template/" .. template .. ".lua", true)
