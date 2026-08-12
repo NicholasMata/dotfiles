@@ -57,17 +57,12 @@ return {
     end,
   },
   {
-    "mfussenegger/nvim-dap",
-    opts = function(_, opts)
-      table.insert(opts.ensure_installed, "coreclr")
-    end,
-  },
-  {
     "nicholasmata/nvim-dap-cs",
     ft = "cs",
     dir = dap_cs_path,
     config = true,
     dependencies = {
+      -- Avoid Mason's CoreCLR package because it installs the wrong architecture.
       "mfussenegger/nvim-dap",
     },
   },
