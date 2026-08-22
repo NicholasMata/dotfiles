@@ -4,6 +4,7 @@ BREW := $(shell command -v brew 2>/dev/null)
 STYLUA := $(shell command -v stylua 2>/dev/null)
 BREWFILE := $(CURDIR)/Brewfile
 OPTIONAL_BREWFILE := $(CURDIR)/Brewfile.optional
+NVM_DEFAULT_PACKAGES := $(CURDIR)/zsh/.nvm/default-packages
 STYLUA_CONFIG := $(CURDIR)/nvim/.config/nvim/stylua.toml
 STOW_PACKAGES := aerospace ghostty herdr mouseless nanobar nvim zsh
 ZINIT_HOME := $(if $(XDG_DATA_HOME),$(XDG_DATA_HOME),$(HOME)/.local/share)/zinit/zinit.git
@@ -11,13 +12,13 @@ ZINIT_REPOSITORY := https://github.com/zdharma-continuum/zinit.git
 ZINIT_VERSION := v3.15.0
 ZINIT_REVISION := 429ab136312dfce68ad7d87a0ecb08c5063e7287
 
-.PHONY: all install install-optional dependencies optional-dependencies zinit stow delete check
+.PHONY: all install install-optional dependencies optional-dependencies node-dependencies zinit stow delete check
 
 all: install
 
-install: dependencies zinit stow
+install: dependencies zinit stow node-dependencies
 
-install-optional: dependencies optional-dependencies zinit stow
+install-optional: dependencies optional-dependencies zinit stow node-dependencies
 
 dependencies:
 ifndef BREW
@@ -30,6 +31,18 @@ ifndef BREW
 	$(error Homebrew is required. Install it from https://brew.sh, then run `make optional-dependencies` again)
 endif
 	$(BREW) bundle --file="$(OPTIONAL_BREWFILE)"
+
+node-dependencies:
+	@test -r "$(NVM_DEFAULT_PACKAGES)" || { echo "Missing NVM default package list: $(NVM_DEFAULT_PACKAGES)"; exit 1; }
+	@test -n "$$NVM_DIR" || { echo "NVM is required. Install and activate an NVM-managed Node LTS release."; exit 1; }
+	@case "$$(command -v npm 2>/dev/null)" in \
+		"$$NVM_DIR"/versions/node/*) ;; \
+		*) echo "npm must come from NVM. Run 'nvm install --lts' before 'make node-dependencies'."; exit 1 ;; \
+	esac
+	@while IFS= read -r package; do \
+		case "$$package" in ''|'#'*) continue ;; esac; \
+		npm install --global "$$package" || exit; \
+	done < "$(NVM_DEFAULT_PACKAGES)"
 
 zinit:
 	@if test ! -d "$(ZINIT_HOME)/.git"; then \

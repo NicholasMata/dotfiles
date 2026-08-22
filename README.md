@@ -28,13 +28,16 @@ To install only the Homebrew dependencies and applications, run
 - The [.NET SDK](https://dotnet.microsoft.com/download) for C# development
 
 NVM, Xcode, and the .NET SDK are optional unless you use their corresponding
-Neovim features. The optional Homebrew bundle installs Temurin 21 for Kotlin
-language tooling; use each project's Gradle wrapper (`./gradlew`) instead of
-requiring a global Gradle installation. Zinit is installed by `make install`;
-it can also be installed separately with `make zinit`. Its release tag and
-commit are pinned in the Makefile so a new machine receives the same version.
-To upgrade Zinit, update both `ZINIT_VERSION` and `ZINIT_REVISION`, then run
-`make zinit`.
+Neovim features. Before running `make install` with the Node.js features, use
+`nvm install --lts` so `npm` resolves to an NVM-managed Node release. The
+install target installs the packages in `~/.nvm/default-packages`; it refuses
+to install them when `npm` is owned by another package manager. The optional
+Homebrew bundle installs Temurin 21 for Kotlin language tooling; use each
+project's Gradle wrapper (`./gradlew`) instead of requiring a global Gradle
+installation. Zinit is installed by `make install`; it can also be installed
+separately with `make zinit`. Its release tag and commit are pinned in the
+Makefile so a new machine receives the same version. To upgrade Zinit, update
+both `ZINIT_VERSION` and `ZINIT_REVISION`, then run `make zinit`.
 
 Homebrew installs [rumdl](https://github.com/rvben/rumdl) and
 [Selene](https://github.com/Kampfkarren/selene) for Markdown and Lua linting in
@@ -53,8 +56,9 @@ connections, and query execution through `mssql.nvim`.
 Tool ownership is split deliberately:
 
 - Microsoft manages the .NET SDK, and Mason installs Roslyn and NetCoreDbg.
-- NVM manages Node.js, while Mason installs VTSLS, Biome, Prettierd, Oxlint,
-  the CSS language server, and the JavaScript debug adapter.
+- NVM manages Node.js and the `codex-acp` package used by CodeCompanion, while
+  Mason installs VTSLS, Biome, Prettierd, Oxlint, the CSS language server, and
+  the JavaScript debug adapter.
 - Xcode supplies Swift and SourceKit-LSP; Homebrew supplies SwiftFormat.
 - Homebrew supplies Temurin 21; Mason installs the Kotlin language server,
   Ktlint, and the Kotlin debug adapter.

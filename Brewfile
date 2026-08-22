@@ -16,7 +16,6 @@ brew "zoxide"
 brew "zsh-history-substring-search"
 
 # Commands referenced directly by the Neovim configuration.
-brew "codex-acp"
 brew "fd"
 brew "herdr"
 brew "lazygit"
