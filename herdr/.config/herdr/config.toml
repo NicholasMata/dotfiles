@@ -14,10 +14,9 @@ prefix = "ctrl+space"
 
 settings = "prefix+shift+s"
 
-# Match tmux's split keys, while retaining Herdr's native aliases.
-# double_quote = " (stacked panes, equivalent to tmux split-window)
-# percent      = % (side-by-side panes, equivalent to tmux split-window -h)
-split_horizontal = ["prefix+s", "prefix+minus"]
+# Match the visual split keys used in Neovim.
+split_vertical = "prefix+|"
+split_horizontal = "prefix+minus"
 
 goto = "prefix+space"
 # Workspace picker list
