@@ -86,6 +86,7 @@ vim.keymap.set({ "n", "v" }, "<leader>oY", [["+Y]], { desc = "[Y]ank line" })
 
 vim.keymap.set("n", "<leader>w", "<cmd>w!<CR>", { desc = "[w]rite buffer" })
 vim.keymap.set("n", "<leader>q", "<cmd>confirm q<CR>", { desc = "[q]uit" })
+vim.keymap.set("n", "<leader>Q", "<cmd>confirm qa<CR>", { desc = "[Q]uit all" })
 
 -- Set highlight on search, but clear on pressing <Esc> in normal mode
 vim.opt.hlsearch = true
