@@ -12,13 +12,13 @@ ZINIT_REPOSITORY := https://github.com/zdharma-continuum/zinit.git
 ZINIT_VERSION := v3.15.0
 ZINIT_REVISION := 429ab136312dfce68ad7d87a0ecb08c5063e7287
 
-.PHONY: all install install-optional dependencies optional-dependencies node-dependencies zinit stow delete check
+.PHONY: all install install-optional dependencies optional-dependencies node-dependencies git-tools zinit stow delete check
 
 all: install
 
-install: dependencies zinit stow node-dependencies
+install: dependencies zinit stow node-dependencies git-tools
 
-install-optional: dependencies optional-dependencies zinit stow node-dependencies
+install-optional: dependencies optional-dependencies zinit stow node-dependencies git-tools
 
 dependencies:
 ifndef BREW
@@ -43,6 +43,14 @@ node-dependencies:
 		case "$$package" in ''|'#'*) continue ;; esac; \
 		npm install --global "$$package" || exit; \
 	done < "$(NVM_DEFAULT_PACKAGES)"
+
+git-tools:
+	@command -v git >/dev/null || { echo "Git is required to configure Git tools."; exit 1; }
+	@command -v nvim >/dev/null || { echo "Neovim is required to configure Git tools."; exit 1; }
+	git config --global core.pager 'nvim -R -c "setlocal filetype=git nomodifiable" -c "nnoremap <buffer> q <cmd>qa!<cr>" -'
+	git config --global color.pager false
+	git config --global diff.tool nvimdiff
+	git config --global difftool.prompt false
 
 zinit:
 	@if test ! -d "$(ZINIT_HOME)/.git"; then \

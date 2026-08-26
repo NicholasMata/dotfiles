@@ -17,6 +17,10 @@ To install only the Homebrew dependencies and applications, run
 `make stow`. Optional Homebrew packages are excluded from these commands. Run
 `make optional-dependencies` to install only the optional packages, or
 `make install-optional` to install everything and apply the dotfiles.
+Both install targets also run `make git-tools`, which configures Neovim as the
+global Git pager and diff tool without tracking the rest of `~/.gitconfig`.
+Paged output uses Neovim's syntax highlighting instead of terminal color codes;
+`git difftool` opens changes in `nvimdiff` without an additional prompt.
 
 ## Prerequisites
 
