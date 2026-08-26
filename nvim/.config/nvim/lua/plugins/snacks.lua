@@ -128,6 +128,7 @@ return {
       { "<leader>S",  function() Snacks.scratch.select() end, desc = "[S]elect Scratch Buffer" },
       { "<leader>sn", function() Snacks.notifier.show_history() end, desc = "Notification History" },
       { "<leader>bd", function() Snacks.bufdelete() end, desc = "Delete Buffer" },
+      { "<leader>bo", function() Snacks.bufdelete.other() end, desc = "Delete Other Buffers" },
       { "<leader>cR", function() Snacks.rename.rename_file() end, desc = "Rename File" },
       { "<leader>go", function() Snacks.gitbrowse() end, desc = "Git Browse", mode = { "n", "v" } },
       { "<leader>gg", function() Snacks.lazygit() end, desc = "Lazygit" },

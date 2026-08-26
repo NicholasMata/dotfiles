@@ -84,6 +84,9 @@ vim.keymap.set({ "n", "v" }, "<leader>op", [["+p]], { desc = "[p]aste" })
 vim.keymap.set({ "n", "v" }, "<leader>oy", [["+y]], { desc = "[y]ank" })
 vim.keymap.set({ "n", "v" }, "<leader>oY", [["+Y]], { desc = "[Y]ank line" })
 
+vim.keymap.set("n", "[b", "<cmd>bprevious<CR>", { desc = "Previous buffer" })
+vim.keymap.set("n", "]b", "<cmd>bnext<CR>", { desc = "Next buffer" })
+
 vim.keymap.set("n", "<leader>w", "<cmd>w!<CR>", { desc = "[w]rite buffer" })
 vim.keymap.set("n", "<leader>q", "<cmd>confirm q<CR>", { desc = "[q]uit" })
 vim.keymap.set("n", "<leader>Q", "<cmd>confirm qa<CR>", { desc = "[Q]uit all" })
